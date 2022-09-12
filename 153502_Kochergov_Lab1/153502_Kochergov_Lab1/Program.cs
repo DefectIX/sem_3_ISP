@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace laba_1
+namespace _153502_Kochergov_Lab1
 {
 	class Program
 	{
