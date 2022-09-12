@@ -6,4 +6,8 @@
     <RootNamespace>_153502_Kochergov_Lab1</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
 </Project>
