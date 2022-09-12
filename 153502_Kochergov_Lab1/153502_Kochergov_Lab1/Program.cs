@@ -1,5 +1,6 @@
 ﻿using System;
 using _153502_Kochergov_Lab1.Collections;
+using _153502_Kochergov_Lab1.Entities;
 
 namespace _153502_Kochergov_Lab1
 {
@@ -7,18 +8,22 @@ namespace _153502_Kochergov_Lab1
 	{
 		static void Main(string[] args)
 		{
-			MyCustomCollection<int> col = new MyCustomCollection<int>();
-			col.Add(1);
-			col.Add(2);
-			col.Add(3);
-			col.Add(4);
-			col.Remove(2);
-			col.Next();
-			col.RemoveCurrent();
-			for (int i = 0; i < 2; i++)
-			{
-				Console.Write(col[i]);
-			}
+			PayrollDepartment department = new PayrollDepartment();
+			department.AddEmployee("Surname1");
+			department.AddEmployee("Surname2");
+
+			department.AddWork("Work1", 10, Work.WorkType.OutsideOffice);
+			department.AddWork("Work2", 200, Work.WorkType.OutsideOffice);
+			department.AddWork("Work3", 3000, Work.WorkType.InOffice);
+
+			department.AddWorkForEmployee("Surname1", "Work1");
+			department.AddWorkForEmployee("Surname1", "Work2");
+			department.AddWorkForEmployee("Surname2", "Work2");
+			department.AddWorkForEmployee("Surname2", "Work3");
+
+			Console.WriteLine(department.GetSalaryBySurname("Surname1"));
+			Console.WriteLine(department.GetSalaryBySurname("Surname2"));
+			Console.WriteLine(department.GetTotalPayment());
 		}
 	}
 }

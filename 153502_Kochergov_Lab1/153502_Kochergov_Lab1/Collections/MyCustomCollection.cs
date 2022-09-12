@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -8,7 +9,7 @@ using _153502_Kochergov_Lab1.Interfaces;
 
 namespace _153502_Kochergov_Lab1.Collections
 {
-	class MyCustomCollection<T> : ICustomCollection<T>
+	class MyCustomCollection<T> : ICustomCollection<T>, IEnumerable<T>
 	{
 		private Node<T> Curr { get; set; }
 		private Node<T> Begin { get; set; }
@@ -39,10 +40,22 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public int Count { get; private set; } = 0;
 
+		public bool MoveNext()
+		{
+			if (Curr.Next != null)
+			{
+				Curr = Curr.Next;
+				return true;
+			}
+
+			return false;
+		}
+
 		public void Reset()
 		{
 			Curr = Begin;
 		}
+
 
 		public void Next()
 		{
@@ -147,6 +160,16 @@ namespace _153502_Kochergov_Lab1.Collections
 			it.Next = it.Next.Next;
 			Count--;
 			return data;
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return new MyEnumerator<T>(Begin);
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }
