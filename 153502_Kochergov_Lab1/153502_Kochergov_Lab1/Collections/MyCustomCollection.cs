@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,16 @@ namespace _153502_Kochergov_Lab1.Collections
 			{
 				Begin = newNode;
 				Curr = newNode;
+				Count++;
+				return;
 			}
+			if (Count == 1)
+			{
+				Begin.Next = newNode;
+				Count++;
+				return;
+			}
+
 			Node<T> it = Begin;
 			while (it.Next.Next != null)
 				it = it.Next;
@@ -76,16 +86,43 @@ namespace _153502_Kochergov_Lab1.Collections
 				return;
 			}
 
+			if (Begin.Data.Equals(item))
+			{
+				if (Curr == Begin)
+					Curr = Begin.Next;
+				Begin = Begin.Next;
+				Count--;
+				return;
+			}
+
+			if (Begin.Next.Data.Equals(item))
+			{
+				if (Curr == Begin.Next)
+					Curr = Begin;
+				Begin.Next = Begin.Next.Next;
+				Count--;
+				return;
+			}
+
 			Node<T> it = Begin;
 			while (it.Next.Next != null)
+			{
+				if (it.Next.Next.Data.Equals(item))
+				{
+					it.Next = it.Next.Next;
+					break;
+				}
 				it = it.Next;
+			}
 
-			it.Next = null;
-			Count--;
+			if (it.Next.Next == null)
+				return;
 		}
 
 		public T Current()
 		{
+			if (Count == 0)
+				throw new IndexOutOfRangeException();
 			return Curr.Data;
 		}
 
