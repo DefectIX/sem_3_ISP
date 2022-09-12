@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _153502_Kochergov_Lab1.Collections;
 
 namespace _153502_Kochergov_Lab1.Entities
 {
 	class Employee
 	{
-		public List<Work> LstWorksOfEmployee { get; set; } = new List<Work>();
+		public MyCustomCollection<Work> LstWorksOfEmployee { get; set; } = new MyCustomCollection<Work>();
 		public string Surname { get; set; }
 
 		public Employee()
