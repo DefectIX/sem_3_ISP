@@ -47,37 +47,6 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public int Count { get; private set; }
 
-		object IEnumerator.Current => _curr;
-
-		public bool MoveNext()
-		{
-			if (_curr == null)
-			{
-				if (_begin == null)
-				{
-					return false;
-				}
-				_curr = _begin;
-				return true;
-			}
-			if (_curr.Next != null)
-			{
-				_curr = _curr.Next;
-				return true;
-			}
-			return false;
-		}
-
-		public void Reset()
-		{
-			_curr = null;
-		}
-
-		public void Next()
-		{
-			MoveNext();
-		}
-
 		public void Add(T item)
 		{
 			Node<T> newNode = new Node<T>(item);
@@ -144,9 +113,28 @@ namespace _153502_Kochergov_Lab1.Collections
 			}
 		}
 
-		T ICustomCollection<T>.Current()
+		public bool MoveNext()
 		{
-			return Current;
+			if (_curr == null)
+			{
+				if (_begin == null)
+				{
+					return false;
+				}
+				_curr = _begin;
+				return true;
+			}
+			if (_curr.Next != null)
+			{
+				_curr = _curr.Next;
+				return true;
+			}
+			return false;
+		}
+
+		public void Next()
+		{
+			MoveNext();
 		}
 
 		public T Current
@@ -163,6 +151,13 @@ namespace _153502_Kochergov_Lab1.Collections
 					throw new Exception("Cursor out of range");
 				_curr.Data = value;
 			}
+		}
+
+		object IEnumerator.Current => _curr;
+		
+		T ICustomCollection<T>.Current()
+		{
+			return Current;
 		}
 
 		public T RemoveCurrent()
@@ -196,6 +191,11 @@ namespace _153502_Kochergov_Lab1.Collections
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public void Reset()
+		{
+			_curr = null;
 		}
 
 		public void Dispose()
