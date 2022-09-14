@@ -127,9 +127,6 @@ namespace _153502_Kochergov_Lab1.Collections
 				}
 				it = it.Next;
 			}
-
-			if (it.Next.Next == null)
-				return;
 		}
 
 		public T Current()
