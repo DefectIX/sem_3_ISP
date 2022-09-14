@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _153502_Kochergov_Lab1.Collections;
+using _153502_Kochergov_Lab1.Interfaces;
 
 namespace _153502_Kochergov_Lab1.Entities
 {
 	class Employee
 	{
-		public MyCustomCollection<Work> LstWorksOfEmployee { get; set; } = new MyCustomCollection<Work>();
+		public ICustomCollection<Work> LstWorksOfEmployee { get; } = new MyCustomCollection<Work>();
 		public string Surname { get; set; }
 
 		public Employee()

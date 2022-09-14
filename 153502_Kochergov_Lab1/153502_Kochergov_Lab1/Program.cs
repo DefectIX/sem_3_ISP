@@ -4,6 +4,7 @@ using _153502_Kochergov_Lab1.Entities;
 
 namespace _153502_Kochergov_Lab1
 {
+	//Variant 6
 	class Program
 	{
 		static void Main(string[] args)
@@ -21,9 +22,9 @@ namespace _153502_Kochergov_Lab1
 			department.AddWorkForEmployee("Surname2", "Work2");
 			department.AddWorkForEmployee("Surname2", "Work3");
 
-			Console.WriteLine(department.GetSalaryBySurname("Surname1"));
-			Console.WriteLine(department.GetSalaryBySurname("Surname2"));
-			Console.WriteLine(department.GetTotalPayment());
+			Console.WriteLine("Surname1 salary: "+department.GetSalaryBySurname("Surname1"));
+			Console.WriteLine("Surname2 salary: " + department.GetSalaryBySurname("Surname2"));
+			Console.WriteLine("Total payment: " + department.GetTotalPayment());
 		}
 	}
 }

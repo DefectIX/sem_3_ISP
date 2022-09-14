@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _153502_Kochergov_Lab1.Interfaces
 {
-	interface ICustomCollection<T>
+	interface ICustomCollection<T> : IEnumerable<T>
 	{
 		T this[int index] { get; set; }
 		int Count { get; }

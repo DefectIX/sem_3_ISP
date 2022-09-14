@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _153502_Kochergov_Lab1.Collections;
+using _153502_Kochergov_Lab1.Interfaces;
 
 namespace _153502_Kochergov_Lab1.Entities
 {
 	public class PayrollDepartment
 	{
-		private MyCustomCollection<Employee> LstEmployees { get; set; } = new MyCustomCollection<Employee>();
-		private MyCustomCollection<Work> LstWorks { get; set; } = new MyCustomCollection<Work>();
+		private ICustomCollection<Employee> LstEmployees { get; } = new MyCustomCollection<Employee>();
+		private ICustomCollection<Work> LstWorks { get; } = new MyCustomCollection<Work>();
 
 		public void AddEmployee(string surname)
 		{

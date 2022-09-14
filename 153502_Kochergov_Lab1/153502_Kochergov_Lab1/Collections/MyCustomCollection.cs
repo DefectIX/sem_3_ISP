@@ -9,7 +9,7 @@ using _153502_Kochergov_Lab1.Interfaces;
 
 namespace _153502_Kochergov_Lab1.Collections
 {
-	class MyCustomCollection<T> : ICustomCollection<T>, IEnumerable<T>
+	class MyCustomCollection<T> : ICustomCollection<T>
 	{
 		private Node<T> Curr { get; set; }
 		private Node<T> Begin { get; set; }
