@@ -134,9 +134,9 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public T Current()
 		{
-			if (Count == 0)
-				throw new IndexOutOfRangeException();
-			return Curr.Data;
+			if (Curr != null)
+				return Curr.Data;
+			return default;
 		}
 
 		public T RemoveCurrent()
