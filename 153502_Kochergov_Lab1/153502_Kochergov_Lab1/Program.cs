@@ -22,9 +22,10 @@ namespace _153502_Kochergov_Lab1
 			department.AddWorkForEmployee("Surname2", "Work2");
 			department.AddWorkForEmployee("Surname2", "Work3");
 
-			Console.WriteLine("Surname1 salary: "+department.GetSalaryBySurname("Surname1"));
+			Console.WriteLine("Surname1 salary: " + department.GetSalaryBySurname("Surname1"));
 			Console.WriteLine("Surname2 salary: " + department.GetSalaryBySurname("Surname2"));
 			Console.WriteLine("Total payment: " + department.GetTotalPayment());
+			Console.WriteLine("\n\n" + department);
 		}
 	}
 }

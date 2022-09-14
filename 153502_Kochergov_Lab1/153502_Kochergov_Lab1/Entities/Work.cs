@@ -27,5 +27,22 @@ namespace _153502_Kochergov_Lab1.Entities
 			Salary = salary;
 			Type = type;
 		}
+
+		public override string ToString()
+		{
+			string str = "Name:" + Name + " Salary:" + Salary +" ";
+			switch (Type)
+			{
+				case WorkType.InOffice:
+					str += "Type:InOffice";
+					break;
+				case WorkType.OutsideOffice:
+					str += "Type:OutsideOffice";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			return str;
+		}
 	}
 }

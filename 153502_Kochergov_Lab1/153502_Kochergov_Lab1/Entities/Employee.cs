@@ -21,7 +21,7 @@ namespace _153502_Kochergov_Lab1.Entities
 		{
 			Surname = surname;
 		}
-		
+
 		public void AddWork(string name, long salary, Work.WorkType type)
 		{
 			LstWorksOfEmployee.Add(new Work(name, salary, type));
@@ -30,9 +30,14 @@ namespace _153502_Kochergov_Lab1.Entities
 		public long GetSalary()
 		{
 			long result = 0;
-			foreach(var work in LstWorksOfEmployee)
+			foreach (var work in LstWorksOfEmployee)
 				result += work.Salary;
 			return result;
+		}
+
+		public override string ToString()
+		{
+			return "Surname:" + Surname;
 		}
 	}
 }

@@ -45,6 +45,9 @@ namespace _153502_Kochergov_Lab1.Entities
 				}
 			}
 
+			if (work.Name == "")
+				throw new ArgumentException("Work not found");
+
 			employee.LstWorksOfEmployee.Add(work);
 		}
 
@@ -72,6 +75,39 @@ namespace _153502_Kochergov_Lab1.Entities
 			}
 
 			return total;
+		}
+
+		public override string ToString()
+		{
+			string str = "";
+			if (LstEmployees.Count == 0)
+			{
+				str += "No employees\n";
+			}
+			else
+			{
+				str += "Employees:\n";
+				foreach (var employee in LstEmployees)
+				{
+					str += employee + "\n";
+				}
+			}
+
+			str += "\n";
+
+			if (LstWorks.Count == 0)
+			{
+				str += "No works\n";
+			}
+			else
+			{
+				str += "Works:\n";
+				foreach (var work in LstWorks)
+				{
+					str += work + "\n";
+				}
+			}
+			return str;
 		}
 	}
 }
