@@ -11,8 +11,15 @@ namespace _153502_Kochergov_Lab1.Collections
 {
 	class MyCustomCollection<T> : ICustomCollection<T>
 	{
-		private Node<T> Curr { get; set; }
-		private Node<T> Begin { get; set; }
+		public MyCustomCollection()
+		{
+			Count = 0;
+			_begin = null;
+			_curr = null;
+		}
+
+		private Node<T> _begin;
+		private Node<T> _curr;
 
 		public T this[int index]
 		{
@@ -20,7 +27,7 @@ namespace _153502_Kochergov_Lab1.Collections
 			{
 				if (index >= Count)
 					throw new IndexOutOfRangeException();
-				Node<T> it = Begin;
+				Node<T> it = _begin;
 				for (int i = 0; i != index; i++)
 					it = it.Next;
 
@@ -30,7 +37,7 @@ namespace _153502_Kochergov_Lab1.Collections
 			{
 				if (index >= Count)
 					throw new IndexOutOfRangeException();
-				Node<T> it = Begin;
+				Node<T> it = _begin;
 				for (int i = 0; i != index; i++)
 					it = it.Next;
 
@@ -38,49 +45,26 @@ namespace _153502_Kochergov_Lab1.Collections
 			}
 		}
 
-		public int Count { get; private set; } = 0;
-
-		public bool MoveNext()
-		{
-			if (Curr.Next != null)
-			{
-				Curr = Curr.Next;
-				return true;
-			}
-
-			return false;
-		}
-
-		public void Reset()
-		{
-			Curr = Begin;
-		}
-
-
-		public void Next()
-		{
-			if (Curr.Next != null)
-				Curr = Curr.Next;
-		}
+		public int Count { get; private set; }
 
 		public void Add(T item)
 		{
 			Node<T> newNode = new Node<T>(item);
 			if (Count == 0)
 			{
-				Begin = newNode;
-				Curr = newNode;
+				_begin = newNode;
+				_curr = newNode;
 				Count++;
 				return;
 			}
 			if (Count == 1)
 			{
-				Begin.Next = newNode;
+				_begin.Next = newNode;
 				Count++;
 				return;
 			}
 
-			Node<T> it = Begin;
+			Node<T> it = _begin;
 			while (it.Next.Next != null)
 				it = it.Next;
 			it.Next.Next = newNode;
@@ -94,30 +78,30 @@ namespace _153502_Kochergov_Lab1.Collections
 			if (Count == 1)
 			{
 				Count = 0;
-				Begin = null;
-				Curr = null;
+				_begin = null;
+				_curr = null;
 				return;
 			}
 
-			if (Begin.Data.Equals(item))
+			if (_begin.Data.Equals(item))
 			{
-				if (Curr == Begin)
-					Curr = Begin.Next;
-				Begin = Begin.Next;
+				if (_curr == _begin)
+					_curr = _begin.Next;
+				_begin = _begin.Next;
 				Count--;
 				return;
 			}
 
-			if (Begin.Next.Data.Equals(item))
+			if (_begin.Next.Data.Equals(item))
 			{
-				if (Curr == Begin.Next)
-					Curr = Begin;
-				Begin.Next = Begin.Next.Next;
+				if (_curr == _begin.Next)
+					_curr = _begin;
+				_begin.Next = _begin.Next.Next;
 				Count--;
 				return;
 			}
 
-			Node<T> it = Begin;
+			Node<T> it = _begin;
 			while (it.Next.Next != null)
 			{
 				if (it.Next.Next.Data.Equals(item))
@@ -129,11 +113,51 @@ namespace _153502_Kochergov_Lab1.Collections
 			}
 		}
 
-		public T Current()
+		public bool MoveNext()
 		{
-			if (Curr != null)
-				return Curr.Data;
-			return default;
+			if (_curr == null)
+			{
+				if (_begin == null)
+				{
+					return false;
+				}
+				_curr = _begin;
+				return true;
+			}
+			if (_curr.Next != null)
+			{
+				_curr = _curr.Next;
+				return true;
+			}
+			return false;
+		}
+
+		public void Next()
+		{
+			MoveNext();
+		}
+
+		public T Current
+		{
+			get
+			{
+				if (_curr == null)
+					throw new Exception("Cursor out of range");
+				return _curr.Data;
+			}
+			set
+			{
+				if (_curr == null)
+					throw new Exception("Cursor out of range");
+				_curr.Data = value;
+			}
+		}
+
+		object IEnumerator.Current => _curr.Data;
+		
+		T ICustomCollection<T>.Current()
+		{
+			return Current;
 		}
 
 		public T RemoveCurrent()
@@ -141,17 +165,17 @@ namespace _153502_Kochergov_Lab1.Collections
 			if (Count == 0)
 				return default;
 			T data;
-			if (Curr == Begin)
+			if (_curr == _begin)
 			{
-				data = Curr.Data;
+				data = _curr.Data;
 				Count = 0;
-				Begin = null;
-				Curr = null;
+				_begin = null;
+				_curr = null;
 				return data;
 			}
 
-			Node<T> it = Begin;
-			while (it.Next != Curr)
+			Node<T> it = _begin;
+			while (it.Next != _curr)
 				it = it.Next;
 			data = it.Next.Data;
 			it.Next = it.Next.Next;
@@ -161,12 +185,22 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return new MyEnumerator<T>(Begin);
+			return this;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public void Reset()
+		{
+			_curr = null;
+		}
+
+		public void Dispose()
+		{
+			Reset();
 		}
 	}
 }
