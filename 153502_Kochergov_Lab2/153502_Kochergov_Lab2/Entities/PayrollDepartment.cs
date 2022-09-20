@@ -10,6 +10,13 @@ namespace _153502_Kochergov_Lab1.Entities
 {
 	public class PayrollDepartment
 	{
+		public delegate void WorksListChangedHandler(string actionName, string workName, long salary, Work.WorkType type);
+		public delegate void EmployeeListChangedHandler(string actionName, string surname);
+
+		public event WorksListChangedHandler WorksListChanged;
+		public event EmployeeListChangedHandler EmployeeListChanged;
+
+
 		private ICustomCollection<Employee> LstEmployees { get; } = new MyCustomCollection<Employee>();
 		private ICustomCollection<Work> LstWorks { get; } = new MyCustomCollection<Work>();
 
