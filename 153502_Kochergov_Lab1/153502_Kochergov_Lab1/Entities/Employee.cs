@@ -34,7 +34,7 @@ namespace _153502_Kochergov_Lab1.Entities
 				result += work.Salary;
 			return result;
 		}
-		 
+
 		public override string ToString()
 		{
 			return "Surname:" + Surname;
