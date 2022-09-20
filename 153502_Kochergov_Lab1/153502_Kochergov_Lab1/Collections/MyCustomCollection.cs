@@ -153,7 +153,7 @@ namespace _153502_Kochergov_Lab1.Collections
 			}
 		}
 
-		object IEnumerator.Current => _curr;
+		object IEnumerator.Current => _curr.Data;
 		
 		T ICustomCollection<T>.Current()
 		{
