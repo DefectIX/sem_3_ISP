@@ -24,9 +24,9 @@ namespace _153502_Kochergov_Lab1.Entities
 			_lstEmployees.Add(new Employee(surname));
 		}
 
-		public void AddWork(string workName, long salary, Work.WorkType type)
+		public void AddWork(string workName, long payment, Work.WorkType type)
 		{
-			_lstWorks.Add(new Work(workName, salary, type));
+			_lstWorks.Add(new Work(workName, payment, type));
 		}
 
 		public Employee FindEmployee(string surname)
@@ -38,7 +38,7 @@ namespace _153502_Kochergov_Lab1.Entities
 					return employee;
 				}
 			}
-			return default;
+			return new Employee();
 		}
 
 		public Work FindWork(string workName)
@@ -50,7 +50,7 @@ namespace _153502_Kochergov_Lab1.Entities
 					return work;
 				}
 			}
-			return default;
+			return new Work();
 		}
 
 		public void AddWorkForEmployee(string employeeSurname, string workName)
@@ -58,12 +58,12 @@ namespace _153502_Kochergov_Lab1.Entities
 			Work work = FindWork(workName);
 			Employee employee = FindEmployee(employeeSurname);
 			employee.AddWork(work);
-
+			Console.WriteLine($"{employee.Surname} {work.Name}");
 		}
 
-		public long GetSalaryBySurname(string surname)
+		public long GetPaymentBySurname(string surname)
 		{
-			return FindEmployee(surname).GetSalary();
+			return FindEmployee(surname).GetPayment();
 		}
 
 		public long GetTotalPayment()
@@ -71,7 +71,7 @@ namespace _153502_Kochergov_Lab1.Entities
 			long total = 0;
 			foreach (var curEmployee in _lstEmployees)
 			{
-				total += curEmployee.GetSalary();
+				total += curEmployee.GetPayment();
 			}
 
 			return total;

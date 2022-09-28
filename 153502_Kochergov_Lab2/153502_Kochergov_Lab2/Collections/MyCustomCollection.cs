@@ -84,7 +84,7 @@ namespace _153502_Kochergov_Lab1.Collections
 					return;
 				}
 			}
-			throw new ArgumentException($"The collection does not contain tem {item.ToString()}");
+			throw new ArgumentException($"The collection does not contain tem {item}");
 		}
 
 		public bool MoveNext()

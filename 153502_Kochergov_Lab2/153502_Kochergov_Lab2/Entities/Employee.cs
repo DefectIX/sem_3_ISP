@@ -28,11 +28,11 @@ namespace _153502_Kochergov_Lab1.Entities
 			LstWorksOfEmployee.Add(work);
 		}
 
-		public long GetSalary()
+		public long GetPayment()
 		{
 			long result = 0;
 			foreach (var work in LstWorksOfEmployee)
-				result += work.Salary;
+				result += work.Payment;
 			return result;
 		}
 

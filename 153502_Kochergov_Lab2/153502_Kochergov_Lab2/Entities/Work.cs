@@ -14,7 +14,7 @@ namespace _153502_Kochergov_Lab1.Entities
 			OutsideOffice
 		}
 		public string Name { get; set; }
-		public long Salary { get; set; }
+		public long Payment { get; set; }
 		public WorkType Type { get; set; }
 
 		public Work()
@@ -22,16 +22,16 @@ namespace _153502_Kochergov_Lab1.Entities
 			Name = "Undefined";
 		}
 
-		public Work(string name, long salary, WorkType type)
+		public Work(string name, long payment, WorkType type)
 		{
 			Name = name;
-			Salary = salary;
+			Payment = payment;
 			Type = type;
 		}
 
 		public override string ToString()
 		{
-			string str = $"Name: {Name} Salary: {Salary} ";
+			string str = $"Name: {Name} Payment: {Payment} ";
 			switch (Type)
 			{
 				case WorkType.InOffice:
