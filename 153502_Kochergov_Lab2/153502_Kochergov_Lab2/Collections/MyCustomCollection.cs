@@ -26,7 +26,7 @@ namespace _153502_Kochergov_Lab1.Collections
 		private Node<T> _current = null;
 		private Node<T> _last = null;
 
-		T IEnumerator<T>.Current => _current.value;
+		T IEnumerator<T>.Current => _current.Value;
 
 		object IEnumerator.Current => _current;
 
@@ -44,7 +44,7 @@ namespace _153502_Kochergov_Lab1.Collections
 				_current = _first;
 				for (int i = 0; i < index; i++)
 					Next();
-				return _current.value;
+				return _current.Value;
 			}
 			set
 			{
@@ -53,7 +53,7 @@ namespace _153502_Kochergov_Lab1.Collections
 				_current = _first;
 				for (int i = 0; i < index; i++)
 					Next();
-				_current.value = value;
+				_current.Value = value;
 			}
 		}
 
@@ -67,8 +67,8 @@ namespace _153502_Kochergov_Lab1.Collections
 			else
 			{
 				Node<T> temp = new Node<T>(item);
-				_last.next = temp;
-				temp.prev = _last;
+				_last.Next = temp;
+				temp.Prev = _last;
 				_last = temp;
 
 			}
@@ -81,11 +81,11 @@ namespace _153502_Kochergov_Lab1.Collections
 		public T Current()
 		{
 			if (_current != null)
-				return _current.value;
+				return _current.Value;
 			else
 			{
 				_current = _first;
-				return _current.value;
+				return _current.Value;
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace _153502_Kochergov_Lab1.Collections
 			Reset();
 			while (MoveNext())
 			{
-				if (item.Equals(_current.value))
+				if (item.Equals(_current.Value))
 				{
 					RemoveCurrent();
 					Reset();
@@ -113,26 +113,26 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public T RemoveCurrent()
 		{
-			T temp = _current.value;
+			T temp = _current.Value;
 			--size;
 			if (Object.ReferenceEquals(_first, _current))
 			{
-				_first = _first.next;
-				_first.prev = null;
+				_first = _first.Next;
+				_first.Prev = null;
 				_current = _first;
 
 			}
 			else if (Object.ReferenceEquals(_last, _current))
 			{
-				_last = _last.prev;
-				_last.next = null;
+				_last = _last.Prev;
+				_last.Next = null;
 				_current = _last;
 			}
 			else
 			{
-				_current.prev.next = _current.next;
-				_current.next.prev = _current.prev;
-				_current = _current.next;
+				_current.Prev.Next = _current.Next;
+				_current.Next.Prev = _current.Prev;
+				_current = _current.Next;
 			}
 
 			return temp;
@@ -165,9 +165,9 @@ namespace _153502_Kochergov_Lab1.Collections
 				_current = _first;
 				return true;
 			}
-			else if (_current.next != null)
+			else if (_current.Next != null)
 			{
-				_current = _current.next;
+				_current = _current.Next;
 				return true;
 			}
 
