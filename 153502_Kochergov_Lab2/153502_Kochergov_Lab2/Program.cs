@@ -1,9 +1,8 @@
 ﻿using System;
-using _153502_Kochergov_Lab1.Collections;
-using _153502_Kochergov_Lab1.Entities;
+using _153502_Kochergov_Lab2.Collections;
 using _153502_Kochergov_Lab2.Entities;
 
-namespace _153502_Kochergov_Lab1
+namespace _153502_Kochergov_Lab2
 {
 	//Variant 6
 	class Program
