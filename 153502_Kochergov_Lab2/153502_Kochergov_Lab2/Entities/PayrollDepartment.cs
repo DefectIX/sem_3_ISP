@@ -14,7 +14,7 @@ namespace _153502_Kochergov_Lab1.Entities
 
 		public event MessageHandler WorksListChanged;
 		public event MessageHandler EmployeeListChanged;
-		public event MessageHandler EmployeeDoingWork;
+		public event MessageHandler EmployeeRecievedWork;
 
 		private readonly ICustomCollection<Employee> _lstEmployees = new MyCustomCollection<Employee>();
 		private readonly ICustomCollection<Work> _lstWorks = new MyCustomCollection<Work>();
@@ -22,11 +22,13 @@ namespace _153502_Kochergov_Lab1.Entities
 		public void AddEmployee(string surname)
 		{
 			_lstEmployees.Add(new Employee(surname));
+			EmployeeListChanged?.Invoke($"Employee {surname} registered");
 		}
 
 		public void AddWork(string workName, long payment, Work.WorkType type)
 		{
 			_lstWorks.Add(new Work(workName, payment, type));
+			WorksListChanged?.Invoke($"Work {workName} registered");
 		}
 
 		public Employee FindEmployee(string surname)
@@ -38,7 +40,7 @@ namespace _153502_Kochergov_Lab1.Entities
 					return employee;
 				}
 			}
-			return new Employee();
+			return default;
 		}
 
 		public Work FindWork(string workName)
@@ -50,7 +52,7 @@ namespace _153502_Kochergov_Lab1.Entities
 					return work;
 				}
 			}
-			return new Work();
+			return default;
 		}
 
 		public void AddWorkForEmployee(string employeeSurname, string workName)
@@ -58,7 +60,7 @@ namespace _153502_Kochergov_Lab1.Entities
 			Employee employee = FindEmployee(employeeSurname);
 			Work work = FindWork(workName);
 			employee.AddWork(work);
-			Console.WriteLine($"{employee.Surname} {work.Name}");
+			EmployeeRecievedWork?.Invoke($"Employee {employeeSurname} recieved work {workName}");
 		}
 
 		public long GetPaymentBySurname(string surname)

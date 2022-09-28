@@ -17,7 +17,7 @@ namespace _153502_Kochergov_Lab2.Entities
 
 		public void AddToHistory(string eventString)
 		{
-			History += eventString + '\n';
+			History += $"{eventString}\n";
 		}
 
 		public void PrintHistory()
