@@ -1,180 +1,176 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _153502_Kochergov_Lab1.Interfaces;
+using _153502_Kochergov_Lab2.Collections;
 
 namespace _153502_Kochergov_Lab1.Collections
 {
-	class MyCustomCollection<T> : ICustomCollection<T>
+}
+class MyCustomCollection<T> : ICustomCollection<T>, IEnumerable<T>, IEnumerator<T>
+{
+
+	private int size;
+
+	public int Count { get { return size; } }
+
+
+
+	private Node<T> _first = null;
+	private Node<T> _current = null;
+	private Node<T> _last = null;
+
+	T IEnumerator<T>.Current => _current.value;
+
+	object IEnumerator.Current => _current;
+
+	public MyCustomCollection()
 	{
-		public MyCustomCollection()
+		size = 0;
+	}
+
+	public T this[int index]
+	{
+		get
 		{
-			Count = 0;
-			_begin = null;
-			_curr = null;
+			if (index >= Count)
+				throw new IndexOutOfRangeException();
+			_current = _first;
+			for (int i = 0; i < index; i++)
+				Next();
+			return _current.value;
 		}
-
-		private Node<T> _begin;
-		private Node<T> _curr;
-
-		public T this[int index]
+		set
 		{
-			get
-			{
-				if (index >= Count)
-					throw new IndexOutOfRangeException();
-				Node<T> it = _begin;
-				for (int i = 0; i != index; i++)
-					it = it.Next;
-
-				return it.Data;
-			}
-			set
-			{
-				if (index >= Count)
-					throw new IndexOutOfRangeException();
-				Node<T> it = _begin;
-				for (int i = 0; i != index; i++)
-					it = it.Next;
-
-				it.Data = value;
-			}
+			if (index >= Count)
+				throw new IndexOutOfRangeException();
+			_current = _first;
+			for (int i = 0; i < index; i++)
+				Next();
+			_current.value = value;
 		}
+	}
 
-		public int Count { get; private set; }
-
-		public void Add(T item)
+	public void Add(T item)
+	{
+		if (_first == null)
 		{
-			Node<T> newNode = new Node<T>(item);
-			if (Count == 0)
+			_first = new Node<T>(item);
+			_last = _first;
+		}
+		else
+		{
+			Node<T> temp = new Node<T>(item);
+			_last.next = temp;
+			temp.prev = _last;
+			_last = temp;
+
+		}
+		++size;
+	}
+
+
+
+	public T Current()
+	{
+		if (_current != null)
+			return _current.value;
+		else
+		{
+			_current = _first;
+			return _current.value;
+		}
+	}
+
+	public void Next()
+	{
+		MoveNext();
+	}
+
+	public void Remove(T item)
+	{
+		Reset();
+		while (MoveNext())
+		{
+			if (item.Equals(_current.value))
 			{
-				_begin = newNode;
-				_curr = newNode;
-				Count++;
+				RemoveCurrent();
+				Reset();
 				return;
 			}
-			if (Count == 1)
-			{
-				_begin.Next = newNode;
-				Count++;
-				return;
-			}
 
-			Node<T> it = _begin;
-			while (it.Next.Next != null)
-				it = it.Next;
-			it.Next.Next = newNode;
-			Count++;
+		}
+		throw new ArgumentException($"The collection does not contain tem {item.ToString()}");
+	}
+
+	public T RemoveCurrent()
+	{
+		T temp = _current.value;
+		--size;
+		if (Object.ReferenceEquals(_first, _current))
+		{
+			_first = _first.next;
+			_first.prev = null;
+			_current = _first;
+
+		}
+		else if (Object.ReferenceEquals(_last, _current))
+		{
+			_last = _last.prev;
+			_last.next = null;
+			_current = _last;
+		}
+		else
+		{
+			_current.prev.next = _current.next;
+			_current.next.prev = _current.prev;
+			_current = _current.next;
 		}
 
-		public void Remove(T item)
-		{
-			Reset();
-			while (MoveNext())
-			{
-				if (Current!.Equals(item))
-				{
-					RemoveCurrent();
-					Reset();
-					return;
-				}
-			}
-			throw new ArgumentException($"The collection does not contain tem {item}");
-		}
+		return temp;
+	}
 
-		public bool MoveNext()
+	public void Reset()
+	{
+		_current = null;
+	}
+
+	public IEnumerator<T> GetEnumerator()
+	{
+		return this;
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
+	}
+
+	public bool MoveNext()
+	{
+
+		if (_current == null && _first == null)
 		{
-			if (_curr == null)
-			{
-				if (_begin == null)
-				{
-					return false;
-				}
-				_curr = _begin;
-				return true;
-			}
-			if (_curr.Next != null)
-			{
-				_curr = _curr.Next;
-				return true;
-			}
 			return false;
 		}
-
-		public void Next()
+		else if (_current == null)
 		{
-			MoveNext();
+			_current = _first;
+			return true;
+		}
+		else if (_current.next != null)
+		{
+			_current = _current.next;
+			return true;
 		}
 
-		public T Current
-		{
-			get
-			{
-				if (_curr == null)
-					throw new Exception("Cursor out of range");
-				return _curr.Data;
-			}
-			set
-			{
-				if (_curr == null)
-					throw new Exception("Cursor out of range");
-				_curr.Data = value;
-			}
-		}
+		return false;
+	}
 
-		object IEnumerator.Current => _curr.Data;
-		
-		T ICustomCollection<T>.Current()
-		{
-			return Current;
-		}
-
-		public T RemoveCurrent()
-		{
-			if (Count == 0)
-				return default;
-			T data;
-			if (_curr == _begin)
-			{
-				data = _curr.Data;
-				Count = 0;
-				_begin = null;
-				_curr = null;
-				return data;
-			}
-
-			Node<T> it = _begin;
-			while (it.Next != _curr)
-				it = it.Next;
-			data = it.Next.Data;
-			it.Next = it.Next.Next;
-			Count--;
-			return data;
-		}
-
-		public IEnumerator<T> GetEnumerator()
-		{
-			return this;
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-
-		public void Reset()
-		{
-			_curr = null;
-		}
-
-		public void Dispose()
-		{
-			Reset();
-		}
+	public void Dispose()
+	{
+		Reset();
 	}
 }

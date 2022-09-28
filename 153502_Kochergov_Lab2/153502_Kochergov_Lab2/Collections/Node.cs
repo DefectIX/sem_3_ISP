@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _153502_Kochergov_Lab1.Collections
+namespace _153502_Kochergov_Lab2.Collections
 {
 	class Node<T>
 	{
-		public Node(T data)
+		public T value;
+		public Node<T> next = null;
+		public Node<T> prev = null;
+		public Node(T value)
 		{
-			Data = data;
+			this.value = value;
 		}
-		public T Data { get; set; }
-		public Node<T> Next { get; set; }
+		public Node() { }
+
 	}
 }
