@@ -15,10 +15,10 @@ namespace _153502_Kochergov_Lab3.Entities
 
 		public event MessageHandler WorksListChanged;
 		public event MessageHandler EmployeeListChanged;
-		public event MessageHandler EmployeeRecievedWork;
+		public event MessageHandler EmployeeReceivedWork;
 
-		private readonly ICustomCollection<Employee> _lstEmployees = new MyCustomCollection<Employee>();
-		private readonly ICustomCollection<Work> _lstWorks = new MyCustomCollection<Work>();
+		private readonly Dictionary<string, Work> _dctWorks = new();
+		private readonly List<Employee> _lstEmployees = new();
 
 		public void AddEmployee(string surname)
 		{
@@ -28,7 +28,7 @@ namespace _153502_Kochergov_Lab3.Entities
 
 		public void AddWork(string workName, long payment, Work.WorkType type)
 		{
-			_lstWorks.Add(new Work(workName, payment, type));
+			_dctWorks.Add(workName, new Work(workName, payment, type));
 			WorksListChanged?.Invoke($"Work {workName} registered");
 		}
 
@@ -46,11 +46,11 @@ namespace _153502_Kochergov_Lab3.Entities
 
 		public Work FindWork(string workName)
 		{
-			foreach (var work in _lstWorks)
+			foreach (var work in _dctWorks)
 			{
-				if (work.Name == workName)
+				if (work.Key == workName)
 				{
-					return work;
+					return work.Value;
 				}
 			}
 			return default;
@@ -61,23 +61,7 @@ namespace _153502_Kochergov_Lab3.Entities
 			Employee employee = FindEmployee(employeeSurname);
 			Work work = FindWork(workName);
 			employee.AddWork(work);
-			EmployeeRecievedWork?.Invoke($"Employee {employeeSurname} recieved work {workName}");
-		}
-
-		public long GetPaymentBySurname(string surname)
-		{
-			return FindEmployee(surname).GetPayment();
-		}
-
-		public long GetTotalPayment()
-		{
-			long total = 0;
-			foreach (var curEmployee in _lstEmployees)
-			{
-				total += curEmployee.GetPayment();
-			}
-
-			return total;
+			EmployeeReceivedWork?.Invoke($"Employee {employeeSurname} received work {workName}");
 		}
 
 		public override string ToString()
@@ -98,19 +82,44 @@ namespace _153502_Kochergov_Lab3.Entities
 
 			str += "\n";
 
-			if (_lstWorks.Count == 0)
+			if (_dctWorks.Count == 0)
 			{
 				str += "No works\n";
 			}
 			else
 			{
 				str += "Works:\n";
-				foreach (var work in _lstWorks)
+				foreach (var work in _dctWorks)
 				{
 					str += work + "\n";
 				}
 			}
 			return str;
 		}
+
+
+		//LINQ Methods
+		public List<string> GetSortedWorkNamesList()
+		{
+			return _dctWorks.OrderBy(x => x.Value.Payment).Select(x => x.Key).ToList();
+		}
+
+		public long GetTotalPayment()
+		{
+			return _lstEmployees.Sum(x => x.GetPayment());
+		}
+
+		public long GetEmployeePayment(string name)
+		{
+			return FindEmployee(name).GetPayment();
+		}
+
+		public string FindEmployeeWithMaxPayment()
+		{
+			long max = _lstEmployees.Max(x => x.GetPayment());
+			return _lstEmployees.First(x => x.GetPayment().Equals(max)).Surname;
+		}
+
+		public string 
 	}
 }

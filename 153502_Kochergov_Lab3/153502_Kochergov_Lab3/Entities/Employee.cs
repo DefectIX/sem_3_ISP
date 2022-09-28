@@ -10,7 +10,8 @@ namespace _153502_Kochergov_Lab3.Entities
 {
 	public class Employee
 	{
-		public ICustomCollection<Work> LstWorksOfEmployee { get; } = new MyCustomCollection<Work>();
+		private readonly List<Work> _lstWorksOfEmployee = new();
+
 		public string Surname { get; set; }
 
 		public Employee()
@@ -25,15 +26,12 @@ namespace _153502_Kochergov_Lab3.Entities
 
 		public void AddWork(Work work)
 		{
-			LstWorksOfEmployee.Add(work);
+			_lstWorksOfEmployee.Add(work);
 		}
 
 		public long GetPayment()
 		{
-			long result = 0;
-			foreach (var work in LstWorksOfEmployee)
-				result += work.Payment;
-			return result;
+			return _lstWorksOfEmployee.Sum(x => x.Payment);
 		}
 
 		public override string ToString()
