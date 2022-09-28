@@ -12,15 +12,12 @@ namespace _153502_Kochergov_Lab1.Collections
 
 	class MyCustomCollection<T> : ICustomCollection<T>, IEnumerable<T>, IEnumerator<T>
 	{
-
-		private int size;
+		private int _size;
 
 		public int Count
 		{
-			get { return size; }
+			get { return _size; }
 		}
-
-
 
 		private Node<T> _first = null;
 		private Node<T> _current = null;
@@ -32,7 +29,7 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public MyCustomCollection()
 		{
-			size = 0;
+			_size = 0;
 		}
 
 		public T this[int index]
@@ -73,10 +70,8 @@ namespace _153502_Kochergov_Lab1.Collections
 
 			}
 
-			++size;
+			++_size;
 		}
-
-
 
 		public T Current()
 		{
@@ -114,7 +109,7 @@ namespace _153502_Kochergov_Lab1.Collections
 		public T RemoveCurrent()
 		{
 			T temp = _current.Value;
-			--size;
+			--_size;
 			if (Object.ReferenceEquals(_first, _current))
 			{
 				_first = _first.Next;
