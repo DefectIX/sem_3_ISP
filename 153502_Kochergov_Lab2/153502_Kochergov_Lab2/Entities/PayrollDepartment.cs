@@ -55,8 +55,8 @@ namespace _153502_Kochergov_Lab1.Entities
 
 		public void AddWorkForEmployee(string employeeSurname, string workName)
 		{
-			Work work = FindWork(workName);
 			Employee employee = FindEmployee(employeeSurname);
+			Work work = FindWork(workName);
 			employee.AddWork(work);
 			Console.WriteLine($"{employee.Surname} {work.Name}");
 		}
