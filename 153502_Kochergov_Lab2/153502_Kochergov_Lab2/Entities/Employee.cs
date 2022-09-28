@@ -8,13 +8,14 @@ using _153502_Kochergov_Lab1.Interfaces;
 
 namespace _153502_Kochergov_Lab1.Entities
 {
-	class Employee
+	public class Employee
 	{
 		public ICustomCollection<Work> LstWorksOfEmployee { get; } = new MyCustomCollection<Work>();
 		public string Surname { get; set; }
 
 		public Employee()
 		{
+			Surname = "Undefined";
 		}
 
 		public Employee(string surname)
@@ -22,9 +23,9 @@ namespace _153502_Kochergov_Lab1.Entities
 			Surname = surname;
 		}
 
-		public void AddWork(string name, long salary, Work.WorkType type)
+		public void AddWork(Work work)
 		{
-			LstWorksOfEmployee.Add(new Work(name, salary, type));
+			LstWorksOfEmployee.Add(work);
 		}
 
 		public long GetSalary()
@@ -37,7 +38,7 @@ namespace _153502_Kochergov_Lab1.Entities
 
 		public override string ToString()
 		{
-			return "Surname:" + Surname;
+			return $"Surname: {Surname}";
 		}
 	}
 }

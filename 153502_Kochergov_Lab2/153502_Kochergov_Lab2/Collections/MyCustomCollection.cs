@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,44 +74,17 @@ namespace _153502_Kochergov_Lab1.Collections
 
 		public void Remove(T item)
 		{
-			if (Count == 0)
-				return;
-			if (Count == 1)
+			Reset();
+			while (MoveNext())
 			{
-				Count = 0;
-				_begin = null;
-				_curr = null;
-				return;
-			}
-
-			if (_begin.Data.Equals(item))
-			{
-				if (_curr == _begin)
-					_curr = _begin.Next;
-				_begin = _begin.Next;
-				Count--;
-				return;
-			}
-
-			if (_begin.Next.Data.Equals(item))
-			{
-				if (_curr == _begin.Next)
-					_curr = _begin;
-				_begin.Next = _begin.Next.Next;
-				Count--;
-				return;
-			}
-
-			Node<T> it = _begin;
-			while (it.Next.Next != null)
-			{
-				if (it.Next.Next.Data.Equals(item))
+				if (Current!.Equals(item))
 				{
-					it.Next = it.Next.Next;
-					break;
+					RemoveCurrent();
+					Reset();
+					return;
 				}
-				it = it.Next;
 			}
+			throw new ArgumentException($"The collection does not contain tem {item.ToString()}");
 		}
 
 		public bool MoveNext()

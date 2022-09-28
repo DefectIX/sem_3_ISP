@@ -10,73 +10,66 @@ namespace _153502_Kochergov_Lab1.Entities
 {
 	public class PayrollDepartment
 	{
-		public delegate void WorksListChangedHandler(string actionName, string workName, long salary, Work.WorkType type);
-		public delegate void EmployeeListChangedHandler(string actionName, string surname);
+		public delegate void MessageHandler(string message);
 
-		public event WorksListChangedHandler WorksListChanged;
-		public event EmployeeListChangedHandler EmployeeListChanged;
+		public event MessageHandler WorksListChanged;
+		public event MessageHandler EmployeeListChanged;
+		public event MessageHandler EmployeeDoingWork;
 
-
-		private ICustomCollection<Employee> LstEmployees { get; } = new MyCustomCollection<Employee>();
-		private ICustomCollection<Work> LstWorks { get; } = new MyCustomCollection<Work>();
+		private readonly ICustomCollection<Employee> _lstEmployees = new MyCustomCollection<Employee>();
+		private readonly ICustomCollection<Work> _lstWorks = new MyCustomCollection<Work>();
 
 		public void AddEmployee(string surname)
 		{
-			LstEmployees.Add(new Employee(surname));
+			_lstEmployees.Add(new Employee(surname));
 		}
 
 		public void AddWork(string workName, long salary, Work.WorkType type)
 		{
-			LstWorks.Add(new Work(workName, salary, type));
+			_lstWorks.Add(new Work(workName, salary, type));
+		}
+
+		public Employee FindEmployee(string surname)
+		{
+			foreach (var employee in _lstEmployees)
+			{
+				if (employee.Surname == surname)
+				{
+					return employee;
+				}
+			}
+			return default;
+		}
+
+		public Work FindWork(string workName)
+		{
+			foreach (var work in _lstWorks)
+			{
+				if (work.Name == workName)
+				{
+					return work;
+				}
+			}
+			return default;
 		}
 
 		public void AddWorkForEmployee(string employeeSurname, string workName)
 		{
-			Work work = new Work();
-			foreach (var curWork in LstWorks)
-			{
-				if (curWork.Name == workName)
-				{
-					work = curWork;
-					break;
-				}
-			}
+			Work work = FindWork(workName);
+			Employee employee = FindEmployee(employeeSurname);
+			employee.AddWork(work);
 
-			Employee employee = new Employee();
-			foreach (var curEmployee in LstEmployees)
-			{
-				if (curEmployee.Surname == employeeSurname)
-				{
-					employee = curEmployee;
-					break;
-				}
-			}
-
-			if (work.Name == "")
-				throw new ArgumentException("Work not found");
-
-			employee.LstWorksOfEmployee.Add(work);
 		}
 
 		public long GetSalaryBySurname(string surname)
 		{
-			Employee employee = new Employee();
-			foreach (var curEmployee in LstEmployees)
-			{
-				if (curEmployee.Surname == surname)
-				{
-					employee = curEmployee;
-					break;
-				}
-			}
-
-			return employee.GetSalary();
+			return FindEmployee(surname).GetSalary();
 		}
 
 		public long GetTotalPayment()
 		{
 			long total = 0;
-			foreach (var curEmployee in LstEmployees)
+			foreach (var curEmployee in _lstEmployees)
 			{
 				total += curEmployee.GetSalary();
 			}
@@ -87,14 +80,14 @@ namespace _153502_Kochergov_Lab1.Entities
 		public override string ToString()
 		{
 			string str = "";
-			if (LstEmployees.Count == 0)
+			if (_lstEmployees.Count == 0)
 			{
 				str += "No employees\n";
 			}
 			else
 			{
 				str += "Employees:\n";
-				foreach (var employee in LstEmployees)
+				foreach (var employee in _lstEmployees)
 				{
 					str += employee + "\n";
 				}
@@ -102,14 +95,14 @@ namespace _153502_Kochergov_Lab1.Entities
 
 			str += "\n";
 
-			if (LstWorks.Count == 0)
+			if (_lstWorks.Count == 0)
 			{
 				str += "No works\n";
 			}
 			else
 			{
 				str += "Works:\n";
-				foreach (var work in LstWorks)
+				foreach (var work in _lstWorks)
 				{
 					str += work + "\n";
 				}

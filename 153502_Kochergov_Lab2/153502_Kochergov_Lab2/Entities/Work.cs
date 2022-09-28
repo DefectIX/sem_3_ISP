@@ -19,6 +19,7 @@ namespace _153502_Kochergov_Lab1.Entities
 
 		public Work()
 		{
+			Name = "Undefined";
 		}
 
 		public Work(string name, long salary, WorkType type)
@@ -30,7 +31,7 @@ namespace _153502_Kochergov_Lab1.Entities
 
 		public override string ToString()
 		{
-			string str = "Name:" + Name + " Salary:" + Salary +" ";
+			string str = $"Name: {Name} Salary: {Salary} ";
 			switch (Type)
 			{
 				case WorkType.InOffice:
