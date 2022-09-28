@@ -40,8 +40,6 @@ namespace _153502_Kochergov_Lab1.Entities
 				case WorkType.OutsideOffice:
 					str += "Type:OutsideOffice";
 					break;
-				default:
-					throw new ArgumentOutOfRangeException();
 			}
 			return str;
 		}
