@@ -122,7 +122,7 @@ namespace _153502_Kochergov_Lab3.Entities
 
 		public int GetNumberOfWorkersWithPaymentGreaterThan(long minPayment)
 		{
-			return _lstEmployees.Aggregate(0, (number, employee) => number += employee.GetPayment() > minPayment ? 1 : 0);
+			return _lstEmployees.Aggregate(0, (number, employee) => number + employee.GetPayment() > minPayment ? 1 : 0);
 		}
 
 		public IEnumerable<(string Surname, long Payment)> GetWorkerWorksPayments(string surname)
