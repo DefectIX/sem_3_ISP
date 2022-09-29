@@ -34,6 +34,12 @@ namespace _153502_Kochergov_Lab3.Entities
 			return _lstWorksOfEmployee.Sum(x => x.Payment);
 		}
 
+		public IEnumerable<(string Surname, long Payment)> GetWorksPayments()
+		{
+			return _lstWorksOfEmployee.GroupBy(work => work.Name, work=>work.Payment)
+				.Select(x => (x.Key, x.Count() * x.First()));
+		}
+
 		public override string ToString()
 		{
 			return $"Surname: {Surname}";

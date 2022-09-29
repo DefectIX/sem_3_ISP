@@ -37,11 +37,22 @@ namespace _153502_Kochergov_Lab3
 			Console.WriteLine($"Surname3 payment: {department.GetEmployeePayment("Surname3")}");
 			Console.WriteLine($"Total payment: {department.GetTotalPayment()}");
 			Console.WriteLine($"Employee with max payment: {department.FindEmployeeWithMaxPayment()}");
+
+			int minPayment = 3000;
+			Console.WriteLine($"Employee with payment more than {minPayment}: {department.GetNumberOfWorkersWithPaymentGreaterThan(minPayment)}");
+
+
+			var workerWorksPayments = department.GetWorkerWorksPayments("Surname2");
+			Console.WriteLine("\n\n");
+
+			Console.WriteLine(string.Join(Environment.NewLine, workerWorksPayments.Select(x => $"{x.Surname} {x.Payment}")));
+
+
+
+
 			//Console.WriteLine($"\n\n{department}\n\n");
-
-			Console.WriteLine("\n");
-			journal.PrintHistory();
-
+			//Console.WriteLine("\n");
+			//journal.PrintHistory();
 
 			//Exceptions demonstration
 			MyCustomCollection<int> collection = new();

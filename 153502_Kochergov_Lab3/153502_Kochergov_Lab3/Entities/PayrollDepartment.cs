@@ -109,9 +109,9 @@ namespace _153502_Kochergov_Lab3.Entities
 			return _lstEmployees.Sum(x => x.GetPayment());
 		}
 
-		public long GetEmployeePayment(string name)
+		public long GetEmployeePayment(string surname)
 		{
-			return FindEmployee(name).GetPayment();
+			return FindEmployee(surname).GetPayment();
 		}
 
 		public string FindEmployeeWithMaxPayment()
@@ -120,6 +120,14 @@ namespace _153502_Kochergov_Lab3.Entities
 			return _lstEmployees.First(x => x.GetPayment().Equals(max)).Surname;
 		}
 
-		public string 
+		public int GetNumberOfWorkersWithPaymentGreaterThan(long minPayment)
+		{
+			return _lstEmployees.Aggregate(0, (number, employee) => number += employee.GetPayment() > minPayment ? 1 : 0);
+		}
+
+		public IEnumerable<(string Surname, long Payment)> GetWorkerWorksPayments(string surname)
+		{
+			return FindEmployee(surname).GetWorksPayments();
+		}
 	}
 }
