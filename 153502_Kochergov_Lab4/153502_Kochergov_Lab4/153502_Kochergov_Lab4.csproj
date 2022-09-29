@@ -6,8 +6,4 @@
     <RootNamespace>_153502_Kochergov_Lab4</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-
 </Project>
