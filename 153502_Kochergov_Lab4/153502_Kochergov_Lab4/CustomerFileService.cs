@@ -15,10 +15,12 @@ namespace _153502_Kochergov_Lab4
 			{
 				while (binaryReader.PeekChar() > -1)
 				{
-					Customer customer = new();
-					customer.Name = binaryReader.ReadString();
-					customer.Age = binaryReader.ReadInt32();
-					customer.IsEmployed = binaryReader.ReadBoolean();
+					Customer customer = new()
+					{
+						Name = binaryReader.ReadString(),
+						Age = binaryReader.ReadInt32(),
+						IsEmployed = binaryReader.ReadBoolean()
+					};
 					yield return customer;
 				}
 			}
