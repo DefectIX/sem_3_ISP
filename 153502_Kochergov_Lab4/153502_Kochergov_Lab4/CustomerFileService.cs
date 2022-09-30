@@ -11,18 +11,34 @@ namespace _153502_Kochergov_Lab4
 	{
 		public IEnumerable<Customer> ReadFile(string fileName)
 		{
-
-			throw new NotImplementedException();
+			using (BinaryReader binaryReader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+			{
+				while (binaryReader.PeekChar() > -1)
+				{
+					Customer customer = new();
+					customer.Name = binaryReader.ReadString();
+					customer.Age = binaryReader.ReadInt32();
+					customer.IsEmployed = binaryReader.ReadBoolean();
+					yield return customer;
+				}
+			}
 		}
 
 		public void SaveData(IEnumerable<Customer> data, string fileName)
 		{
-			using (BinaryWriter bw = new BinaryWriter(File.Open("path", FileMode.OpenOrCreate)))
+			if (File.Exists(fileName))
 			{
-				w.Write
+				File.Delete(fileName);
 			}
-
-			throw new NotImplementedException();
+			using (BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+			{
+				foreach (var customer in data)
+				{
+					binaryWriter.Write(customer.Name);
+					binaryWriter.Write(customer.Age);
+					binaryWriter.Write(customer.IsEmployed);
+				}
+			}
 		}
 	}
 }
