@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace _153502_Kochergov_Lab4
 {
-	class MyCustomComparer<T> : IComparer<T>
+	class MyCustomComparer : IComparer<Customer>
 	{
-		public int Compare(T? x, T? y)
+		public int Compare(Customer? x, Customer? y)
 		{
-			throw new NotImplementedException();
+			return string.CompareOrdinal(x.Name, y.Name);
 		}
 	}
 }
