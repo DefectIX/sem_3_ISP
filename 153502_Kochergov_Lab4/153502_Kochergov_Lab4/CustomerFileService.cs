@@ -12,16 +12,32 @@ namespace _153502_Kochergov_Lab4
 		public IEnumerable<Customer> ReadFile(string fileName)
 		{
 			using BinaryReader binaryReader = new BinaryReader(File.Open(fileName, FileMode.Open));
-			while (binaryReader.PeekChar() > -1)
+
+			while (true)
 			{
-				Customer customer = new()
+				Customer customer;
+				try
 				{
-					Name = binaryReader.ReadString(),
-					Age = binaryReader.ReadInt32(),
-					IsEmployed = binaryReader.ReadBoolean()
-				};
+					customer = new Customer
+					{
+						Name = binaryReader.ReadString(),
+						Age = binaryReader.ReadInt32(),
+						IsEmployed = binaryReader.ReadBoolean()
+					};
+				}
+				catch (EndOfStreamException)
+				{
+					yield break;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Caught: {e.Message}");
+					yield break;
+				}
+
 				yield return customer;
 			}
+
 		}
 
 		public void SaveData(IEnumerable<Customer> data, string fileName)
@@ -33,9 +49,17 @@ namespace _153502_Kochergov_Lab4
 			using BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Create));
 			foreach (var customer in data)
 			{
-				binaryWriter.Write(customer.Name);
-				binaryWriter.Write(customer.Age);
-				binaryWriter.Write(customer.IsEmployed);
+				try
+				{
+					binaryWriter.Write(customer.Name);
+					binaryWriter.Write(customer.Age);
+					binaryWriter.Write(customer.IsEmployed);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Caught: {e.Message}");
+					return;
+				}
 			}
 		}
 	}
