@@ -8,7 +8,7 @@ namespace _153502_Kochergov_Lab4
 {
 	class MyCustomComparer : IComparer<Customer>
 	{
-		public int Compare(Customer? x, Customer? y)
+		public int Compare(Customer x, Customer y)
 		{
 			return string.CompareOrdinal(x.Name, y.Name);
 		}

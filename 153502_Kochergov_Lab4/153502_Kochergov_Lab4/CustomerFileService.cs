@@ -11,6 +11,10 @@ namespace _153502_Kochergov_Lab4
 	{
 		public IEnumerable<Customer> ReadFile(string fileName)
 		{
+			if (!File.Exists(fileName))
+			{
+				yield break;
+			}
 			using BinaryReader binaryReader = new BinaryReader(File.Open(fileName, FileMode.Open));
 
 			while (true)
@@ -47,6 +51,7 @@ namespace _153502_Kochergov_Lab4
 				File.Delete(fileName);
 			}
 			using BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Create));
+
 			foreach (var customer in data)
 			{
 				try
