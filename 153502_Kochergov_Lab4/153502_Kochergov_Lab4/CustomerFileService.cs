@@ -11,18 +11,16 @@ namespace _153502_Kochergov_Lab4
 	{
 		public IEnumerable<Customer> ReadFile(string fileName)
 		{
-			using (BinaryReader binaryReader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+			using BinaryReader binaryReader = new BinaryReader(File.Open(fileName, FileMode.Open));
+			while (binaryReader.PeekChar() > -1)
 			{
-				while (binaryReader.PeekChar() > -1)
+				Customer customer = new()
 				{
-					Customer customer = new()
-					{
-						Name = binaryReader.ReadString(),
-						Age = binaryReader.ReadInt32(),
-						IsEmployed = binaryReader.ReadBoolean()
-					};
-					yield return customer;
-				}
+					Name = binaryReader.ReadString(),
+					Age = binaryReader.ReadInt32(),
+					IsEmployed = binaryReader.ReadBoolean()
+				};
+				yield return customer;
 			}
 		}
 
