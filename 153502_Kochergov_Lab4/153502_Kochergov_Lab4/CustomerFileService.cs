@@ -32,14 +32,12 @@ namespace _153502_Kochergov_Lab4
 			{
 				File.Delete(fileName);
 			}
-			using (BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+			using BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Create));
+			foreach (var customer in data)
 			{
-				foreach (var customer in data)
-				{
-					binaryWriter.Write(customer.Name);
-					binaryWriter.Write(customer.Age);
-					binaryWriter.Write(customer.IsEmployed);
-				}
+				binaryWriter.Write(customer.Name);
+				binaryWriter.Write(customer.Age);
+				binaryWriter.Write(customer.IsEmployed);
 			}
 		}
 	}
