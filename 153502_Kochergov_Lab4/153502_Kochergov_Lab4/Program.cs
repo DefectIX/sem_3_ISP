@@ -26,11 +26,9 @@ namespace _153502_Kochergov_Lab4
 			File.Move(path1, path2, true);
 			
 			List<Customer> list2 = new();
-			
-			foreach (var customer in fileService.ReadFile(path2))
-			{
-				list2.Add(customer);
-			}
+
+			list2.AddRange(fileService.ReadFile(path2).ToList());
+
 			list2.Sort(new MyCustomComparer());
 			Console.WriteLine("Sorted by name with MyCustomComparer:");
 			Console.WriteLine(string.Join(Environment.NewLine, list2));
