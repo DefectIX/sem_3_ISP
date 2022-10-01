@@ -38,6 +38,7 @@ namespace _153502_Kochergov_Lab5
 			Console.WriteLine("\nDeserialized collection:");
 			Console.WriteLine(string.Join("\n", list2) + "\n\n\n");
 			if (shouldDelete) File.Delete(linqPath);
+			list2 = null;
 
 			Console.WriteLine("====================Serialization by XmlSerializer class:===========");
 			serializer.SerializeXML(list, xmlPath);
@@ -47,6 +48,7 @@ namespace _153502_Kochergov_Lab5
 			Console.WriteLine("\nDeserialized collection:");
 			Console.WriteLine(string.Join("\n", list2) + "\n\n\n");
 			if (shouldDelete) File.Delete(xmlPath);
+			list2 = null;
 
 			Console.WriteLine("====================Serialization by JsonSerializer class:==========");
 			serializer.SerializeJSON(list, jsonPath);
