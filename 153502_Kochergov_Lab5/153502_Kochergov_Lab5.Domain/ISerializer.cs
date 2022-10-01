@@ -13,8 +13,8 @@ namespace _153502_Kochergov_Lab5.Domain
 		IEnumerable<Station> DeSerializeByLINQ(string fileName);
 		IEnumerable<Station> DeSerializeXML(string fileName);
 		IEnumerable<Station> DeSerializeJSON(string fileName);
-		void SerializeByLINQ(IEnumerable<Station> xxx, string fileName);
-		void SerializeXML(IEnumerable<Station> xxx, string fileName);
-		void SerializeJSON(IEnumerable<Station> xxx, string fileName);
+		void SerializeByLINQ(IEnumerable<Station> stations, string fileName);
+		void SerializeXML(IEnumerable<Station> stations, string fileName);
+		void SerializeJSON(IEnumerable<Station> stations, string fileName);
 	}
 }
