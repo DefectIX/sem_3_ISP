@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>C:\Users\User\source\repos\sem_3_ISP\153502_Kochergov_Lab6\153502_Kochergov_Lab6\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\153502_Kochergov_Lab6\153502_Kochergov_Lab6.csproj" />
   </ItemGroup>
