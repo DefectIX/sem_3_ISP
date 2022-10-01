@@ -24,7 +24,7 @@ namespace _153502_Kochergov_Lab5
 			var list2 = serializer.DeSerializeByLINQ("file2.xml");
 			Console.WriteLine(string.Join("\n", list2));
 
-			File.Delete("file2.xml");
+			//File.Delete("file2.xml");
 		}
 	}
 }

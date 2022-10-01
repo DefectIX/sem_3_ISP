@@ -14,14 +14,14 @@ namespace _Serializer
 		public IEnumerable<Station> DeSerializeByLINQ(string fileName)
 		{
 			XDocument document = XDocument.Load(fileName);
-			//var a = document.Element("Stations").Elements("Station").First().Element("LuggageOffice");
 			return document.Element("Stations")?
 				.Elements("Station")
+				.Select(e =>e.Element("LuggageOffice"))
 				.Select(e => new Station(new LuggageOffice
 				{
-					ContainersNumber = (int) e.Element("LuggageOffice")?.Attribute("ContainersNumber"),
-					WorkersNumber = (int) e.Element("LuggageOffice")?.Attribute("WorkersNumber"),
-					PhoneNumber = (string) e.Element("LuggageOffice")?.Attribute("PhoneNumber")
+					ContainersNumber = (int) e.Attribute("ContainersNumber"),
+					WorkersNumber = (int) e.Attribute("WorkersNumber"),
+					PhoneNumber = (string) e.Attribute("PhoneNumber")
 				}));
 		}
 
@@ -39,11 +39,11 @@ namespace _Serializer
 		{
 			XDocument document = new XDocument(
 				new XElement("Stations",
-					stations.Select(s => new XElement("Station",
+					stations.Select(s => s.LuggageOffice).Select(s => new XElement("Station",
 						new XElement("LuggageOffice",
-							new XAttribute("ContainersNumber", s.LuggageOffice.ContainersNumber),
-							new XAttribute("WorkersNumber", s.LuggageOffice.WorkersNumber),
-							new XAttribute("PhoneNumber", s.LuggageOffice.PhoneNumber))))));
+							new XAttribute("ContainersNumber", s.ContainersNumber),
+							new XAttribute("WorkersNumber", s.WorkersNumber),
+							new XAttribute("PhoneNumber", s.PhoneNumber))))));
 			document.Save(fileName);
 		}
 
