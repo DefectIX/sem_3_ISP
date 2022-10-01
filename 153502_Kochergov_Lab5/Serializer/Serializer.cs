@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using _153502_Kochergov_Lab5.Domain;
 
 namespace _Serializer
@@ -16,18 +17,20 @@ namespace _Serializer
 			XDocument document = XDocument.Load(fileName);
 			return document.Element("Stations")?
 				.Elements("Station")
-				.Select(e =>e.Element("LuggageOffice"))
+				.Select(e => e.Element("LuggageOffice"))
 				.Select(e => new Station(new LuggageOffice
 				{
-					ContainersNumber = (int) e.Attribute("ContainersNumber"),
-					WorkersNumber = (int) e.Attribute("WorkersNumber"),
-					PhoneNumber = (string) e.Attribute("PhoneNumber")
+					ContainersNumber = (int)e?.Attribute("ContainersNumber"),
+					WorkersNumber = (int)e?.Attribute("WorkersNumber"),
+					PhoneNumber = (string)e?.Attribute("PhoneNumber")
 				}));
 		}
 
 		public IEnumerable<Station> DeSerializeXML(string fileName)
 		{
-			throw new NotImplementedException();
+			XmlSerializer xmlSerializer = new XmlSerializer(typeof(Station[]));
+			using FileStream fileStream = new FileStream(fileName, FileMode.Open);
+			return xmlSerializer.Deserialize(fileStream) as IEnumerable<Station>;
 		}
 
 		public IEnumerable<Station> DeSerializeJSON(string fileName)
@@ -39,17 +42,19 @@ namespace _Serializer
 		{
 			XDocument document = new XDocument(
 				new XElement("Stations",
-					stations.Select(s => s.LuggageOffice).Select(s => new XElement("Station",
+					stations.Select(s => s.LuggageOffice).Select(o => new XElement("Station",
 						new XElement("LuggageOffice",
-							new XAttribute("ContainersNumber", s.ContainersNumber),
-							new XAttribute("WorkersNumber", s.WorkersNumber),
-							new XAttribute("PhoneNumber", s.PhoneNumber))))));
+							new XAttribute("ContainersNumber", o.ContainersNumber),
+							new XAttribute("WorkersNumber", o.WorkersNumber),
+							new XAttribute("PhoneNumber", o.PhoneNumber))))));
 			document.Save(fileName);
 		}
 
 		public void SerializeXML(IEnumerable<Station> stations, string fileName)
 		{
-			throw new NotImplementedException();
+			XmlSerializer xmlSerializer = new XmlSerializer(stations.GetType());
+			using FileStream fileStream = new FileStream(fileName, FileMode.Create);
+			xmlSerializer.Serialize(fileStream, stations);
 		}
 
 		public void SerializeJSON(IEnumerable<Station> stations, string fileName)
