@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 
 namespace _153502_Kochergov_Lab5.Domain
 {
-	[Serializable]
 	public class LuggageOffice
 	{
 		[XmlAttribute("WorkersNumber")]

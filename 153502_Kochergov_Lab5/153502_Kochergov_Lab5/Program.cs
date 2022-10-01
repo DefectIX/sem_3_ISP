@@ -29,8 +29,12 @@ namespace _153502_Kochergov_Lab5
 
 			serializer.SerializeXML(list, "xml.xml");
 			list2 = serializer.DeSerializeXML("xml.xml");
-			Console.WriteLine(string.Join("\n", list2));
+			Console.WriteLine(string.Join("\n", list2) + "\n\n");
+
 			//File.Delete("xml.xml");
+			serializer.SerializeJSON(list, "json.json");
+			list2 = serializer.DeSerializeJSON("json.json");
+			Console.WriteLine(string.Join("\n", list2));
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -35,7 +36,7 @@ namespace _Serializer
 
 		public IEnumerable<Station> DeSerializeJSON(string fileName)
 		{
-			throw new NotImplementedException();
+			return JsonSerializer.Deserialize<IEnumerable<Station>>(File.ReadAllText(fileName));
 		}
 
 		public void SerializeByLINQ(IEnumerable<Station> stations, string fileName)
@@ -59,7 +60,7 @@ namespace _Serializer
 
 		public void SerializeJSON(IEnumerable<Station> stations, string fileName)
 		{
-			throw new NotImplementedException();
+			File.WriteAllText(fileName, JsonSerializer.Serialize(stations));
 		}
 	}
 }
