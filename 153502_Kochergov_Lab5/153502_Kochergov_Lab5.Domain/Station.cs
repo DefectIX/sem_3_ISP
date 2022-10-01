@@ -23,11 +23,7 @@ namespace _153502_Kochergov_Lab5.Domain
 
 		public override string ToString()
 		{
-			return
-				$"Luggage office:\t" +
-				$"ContainersNumber:{LuggageOffice.ContainersNumber}, " +
-				$"PhoneNumber:{LuggageOffice.PhoneNumber}, " +
-				$"WorkersNumber:{LuggageOffice.WorkersNumber}";
+			return $"Luggage office:\t{LuggageOffice}";
 		}
 	}
 }

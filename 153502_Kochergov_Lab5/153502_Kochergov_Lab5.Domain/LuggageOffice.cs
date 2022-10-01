@@ -15,5 +15,10 @@ namespace _153502_Kochergov_Lab5.Domain
 		public int ContainersNumber { get; set; }
 		[XmlAttribute("PhoneNumber")]
 		public string PhoneNumber { get; set; }
+
+		public override string ToString()
+		{
+			return $"ContainersNumber:{ContainersNumber}, PhoneNumber:{PhoneNumber}, WorkersNumber:{WorkersNumber}";
+		}
 	}
 }
