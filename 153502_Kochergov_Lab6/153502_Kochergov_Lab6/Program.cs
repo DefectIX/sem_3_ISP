@@ -22,7 +22,7 @@ namespace _153502_Kochergov_Lab6
 			Type type = assembly.GetTypes()[0];
 			var fileService = Activator.CreateInstance(type.MakeGenericType(typeof(Employee))) as IFileService<Employee>;
 
-			fileService.SaveData(list, "list.json");
+			fileService!.SaveData(list, "list.json");
 			var list2 = fileService.ReadFile("list.json");
 			Console.WriteLine(string.Join("\n", list2));
 		}
