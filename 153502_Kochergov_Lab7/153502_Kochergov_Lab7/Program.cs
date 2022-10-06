@@ -8,8 +8,6 @@ namespace _153502_Kochergov_Lab7
 {
 	class Program
 	{
-		private static object _lockObject = new();
-
 		private static ProgressBarsManager barsManager = new();
 
 		static void Main(string[] args)
@@ -32,7 +30,7 @@ namespace _153502_Kochergov_Lab7
 			barsManager.AddProgressBar(thread2.ManagedThreadId);
 
 			thread1.Start();
-			Thread.Sleep(20);
+			//Thread.Sleep(20);
 			thread2.Start();
 
 			Console.WriteLine();
@@ -40,7 +38,7 @@ namespace _153502_Kochergov_Lab7
 
 		static void PrintResult(double result, Stopwatch elapsedTime, int threadId)
 		{
-			lock (_lockObject)
+			lock (ProgressBarsManager._lockObject)
 			{
 				barsManager.UpdateProgressBar(threadId, 1.0);
 				Console.SetCursorPosition(0, barsManager.GetBarId(threadId) * 6+1);

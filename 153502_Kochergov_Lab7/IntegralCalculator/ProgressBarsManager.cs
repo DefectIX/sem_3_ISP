@@ -9,7 +9,7 @@ namespace _IntegralCalculator
 {
 	public class ProgressBarsManager
 	{
-		private static object _lockObject = new();
+		public static object _lockObject = new();
 
 		private ConcurrentDictionary<int, ProgressBar> progresses = new();
 
