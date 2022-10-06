@@ -32,8 +32,7 @@ namespace _153502_Kochergov_Lab7
 			thread1.Start();
 			//Thread.Sleep(20);
 			thread2.Start();
-
-			Console.WriteLine();
+			
 		}
 
 		static void PrintResult(double result, Stopwatch elapsedTime, int threadId)

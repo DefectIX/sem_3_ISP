@@ -36,9 +36,14 @@ namespace _IntegralCalculator
 		public void UpdateAllBars()
 		{
 			foreach (var prog in progresses)
-				prog.Value.Update();
-
+			{
+				lock (_lockObject)
+				{
+					prog.Value.Update();
+				}
+			}
 		}
+
 
 		public void UpdateAllBars(double progress)
 		{
