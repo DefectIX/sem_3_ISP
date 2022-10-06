@@ -45,7 +45,7 @@ namespace _IntegralCalculator
 				if (allFinished)
 					break;
 
-				Thread.Sleep(10);
+				Thread.Sleep(5);
 			}
 		}
 

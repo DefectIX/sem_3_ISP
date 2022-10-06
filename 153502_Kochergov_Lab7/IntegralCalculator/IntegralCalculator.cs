@@ -32,12 +32,17 @@ namespace _IntegralCalculator
 			{
 				result += F(x) * step;
 				x += step;
+				for (int j = 0; j < 1e1; j++)
+				{
+					start /= 0.999;
+				}
+
 				if (counter == 1e4)
 				{
 					ProgressUpdated?.Invoke(Thread.CurrentThread.ManagedThreadId, (i + 1.0) / steps);
 					counter = 0;
 				}
-			}	
+			}
 
 			sw.Stop();
 			CalculationFinished?.Invoke(result, sw, Thread.CurrentThread.ManagedThreadId);
