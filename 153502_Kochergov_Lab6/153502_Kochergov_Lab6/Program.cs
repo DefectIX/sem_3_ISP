@@ -19,9 +19,8 @@ namespace _153502_Kochergov_Lab6
 			};
 
 			Assembly assembly = Assembly.LoadFile(Path.GetFullPath("FileService.dll"));
-			Type type = assembly.GetTypes()[0];
-			var fileService = Activator.CreateInstance(type.MakeGenericType(typeof(Employee))) as IFileService<Employee>;
-
+			Type type = assembly.GetType("_FileService.FileService`1")!.MakeGenericType(typeof(Employee));
+			var fileService = Activator.CreateInstance(type) as IFileService<Employee>;
 			fileService!.SaveData(list, "list.json");
 			var list2 = fileService.ReadFile("list.json");
 			Console.WriteLine(string.Join("\n", list2));
