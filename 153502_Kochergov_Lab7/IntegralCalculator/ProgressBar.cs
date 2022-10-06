@@ -22,9 +22,8 @@ namespace _IntegralCalculator
 		public int ThreadId { get; set; }
 		public double Progress { get; set; }
 
-		public void Update(double newProgress)
+		public void Update()
 		{
-			Progress = newProgress;
 			Console.SetCursorPosition(0, InstanceId * 6);
 			int currentLength = (int)(Progress * BarLength);
 			string bar = new string('=', currentLength);

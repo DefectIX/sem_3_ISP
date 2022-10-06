@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,24 +9,43 @@ namespace _IntegralCalculator
 {
 	public class ProgressBarsManager
 	{
-		private Dictionary<int, ProgressBar> progresses = new();
+		private static object _lockObject = new();
+
+		private ConcurrentDictionary<int, ProgressBar> progresses = new();
+
+		public int GetBarId(int threadId)
+		{
+			return progresses[threadId].InstanceId;
+		}
 
 		public void AddProgressBar(int threadId)
 		{
-			progresses.Add(threadId, new ProgressBar(threadId, 0));
+			progresses.TryAdd(threadId, new ProgressBar(threadId, 0));
 			UpdateAllBars(0);
 		}
 
 		public void UpdateProgressBar(int threadId, double progress)
 		{
-			progresses[threadId].Update(progress);
+			progresses[threadId].Progress = progress;
+			lock (_lockObject)
+			{
+				UpdateAllBars();
+			}
+		}
+
+		public void UpdateAllBars()
+		{
+			foreach (var prog in progresses)
+				prog.Value.Update();
+
 		}
 
 		public void UpdateAllBars(double progress)
 		{
 			foreach (var prog in progresses)
 			{
-				prog.Value.Update(progress);
+				prog.Value.Progress = progress;
+				prog.Value.Update();
 			}
 		}
 	}

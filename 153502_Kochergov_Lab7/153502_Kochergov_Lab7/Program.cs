@@ -8,6 +8,8 @@ namespace _153502_Kochergov_Lab7
 {
 	class Program
 	{
+		private static object _lockObject = new();
+
 		private static ProgressBarsManager barsManager = new();
 
 		static void Main(string[] args)
@@ -17,7 +19,7 @@ namespace _153502_Kochergov_Lab7
 
 			calculator.CalculationFinished += PrintResult;
 			calculator2.CalculationFinished += PrintResult;
-			
+
 			Thread thread1 = new Thread(calculator.CalculateIntegral);
 			Thread thread2 = new Thread(calculator2.CalculateIntegral);
 
@@ -30,6 +32,7 @@ namespace _153502_Kochergov_Lab7
 			barsManager.AddProgressBar(thread2.ManagedThreadId);
 
 			thread1.Start();
+			Thread.Sleep(20);
 			thread2.Start();
 
 			Console.WriteLine();
@@ -37,14 +40,13 @@ namespace _153502_Kochergov_Lab7
 
 		static void PrintResult(double result, Stopwatch elapsedTime, int threadId)
 		{
-			barsManager.UpdateProgressBar(threadId, 1.0);
-			Console.WriteLine($"Thread with id: {threadId} finished.\n" +
-							  $"Result: {result}, elapsed time: {elapsedTime.Elapsed}");
-		}
-
-		static void FinishProgressBar(double result, Stopwatch elapsedTime, int threadId)
-		{
-			barsManager.UpdateProgressBar(threadId, 1.0);
+			lock (_lockObject)
+			{
+				barsManager.UpdateProgressBar(threadId, 1.0);
+				Console.SetCursorPosition(0, barsManager.GetBarId(threadId) * 6+1);
+				Console.WriteLine($"Thread with id: {threadId} finished.\n" +
+				                  $"Result: {result}, elapsed time: {elapsedTime.Elapsed}");
+			}
 		}
 	}
 }

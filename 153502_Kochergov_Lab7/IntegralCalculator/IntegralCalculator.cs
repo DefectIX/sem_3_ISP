@@ -32,7 +32,7 @@ namespace _IntegralCalculator
 			{
 				result += F(x) * step;
 				x += step;
-				if (counter == 1e7)
+				if (counter == 1e6)
 				{
 					ProgressUpdated?.Invoke(Thread.CurrentThread.ManagedThreadId, (i + 1.0) / steps);
 					counter = 0;
