@@ -8,41 +8,25 @@ namespace _IntegralCalculator
 {
 	public class ProgressBarsManager
 	{
-		public static int BarLength = 32;
+		private Dictionary<int, ProgressBar> progresses = new();
 
-		private Dictionary<int, double> progresses = new();
-
-		public void AddProgressBar(int id)
+		public void AddProgressBar(int threadId)
 		{
-			progresses.Add(id, 0);
-			UpdateBars();
+			progresses.Add(threadId, new ProgressBar(threadId, 0));
+			UpdateAllBars(0);
 		}
 
-		public void UpdateProgressBar(int id, double progress)
+		public void UpdateProgressBar(int threadId, double progress)
 		{
-			progresses[id] = progress;
-			UpdateBars();
+			progresses[threadId].Update(progress);
 		}
 
-		public void UpdateBars()
+		public void UpdateAllBars(double progress)
 		{
-			int i = 0;
 			foreach (var prog in progresses)
 			{
-				PrintProgressBar(prog.Key, prog.Value, i++);
+				prog.Value.Update(progress);
 			}
-		}
-
-		public void PrintProgressBar(int id, double progress, int i)
-		{
-			Console.SetCursorPosition(0, i*6);
-			int currentLength = (int)(progress * BarLength);
-			string bar = new string('=', currentLength);
-			int percents = (int)Math.Round(progress * 100, 0);
-			if (percents != 100)
-				bar += '>';
-			bar += new string(' ', BarLength - bar.Length);
-			Console.WriteLine($"Поток {id} [{bar}] {percents}%");
 		}
 	}
 }

@@ -14,17 +14,19 @@ namespace _153502_Kochergov_Lab7
 		{
 			IntegralCalculator calculator = new();
 			IntegralCalculator calculator2 = new();
+
 			calculator.CalculationFinished += PrintResult;
 			calculator2.CalculationFinished += PrintResult;
 			
 			Thread thread1 = new Thread(calculator.CalculateIntegral);
+			Thread thread2 = new Thread(calculator2.CalculateIntegral);
 
-			barsManager.AddProgressBar(thread1.ManagedThreadId);
 			calculator.ProgressUpdated += barsManager.UpdateProgressBar;
 			calculator2.ProgressUpdated += barsManager.UpdateProgressBar;
 
 
-			Thread thread2 = new Thread(calculator2.CalculateIntegral);
+
+			barsManager.AddProgressBar(thread1.ManagedThreadId);
 			barsManager.AddProgressBar(thread2.ManagedThreadId);
 
 			thread1.Start();
