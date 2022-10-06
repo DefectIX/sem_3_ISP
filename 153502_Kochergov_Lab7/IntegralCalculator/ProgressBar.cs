@@ -16,24 +16,23 @@ namespace _IntegralCalculator
 			InstanceId = _instanceCounter++;
 			ThreadId = threadId;
 			Progress = progress;
+			IsFinished = false;
 		}
 
 		public int InstanceId { get; }
 		public int ThreadId { get; set; }
 		public double Progress { get; set; }
+		public bool IsFinished { get; set; }
 
-		public void Update()
+		public override string ToString()
 		{
-			Console.SetCursorPosition(0, InstanceId * 6);
 			int currentLength = (int)(Progress * BarLength);
 			string bar = new string('=', currentLength);
 			int percents = (int)Math.Round(Progress * 100, 0);
 			if (percents != 100)
 				bar += '>';
 			bar += new string(' ', BarLength - bar.Length);
-			Console.WriteLine($"Поток {ThreadId} [{bar}] {percents}%");
-
+			return $"Thread {ThreadId} [{bar}] {percents}%";
 		}
-
 	}
 }
