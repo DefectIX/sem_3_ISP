@@ -12,7 +12,7 @@ namespace _153502_Kochergov_Lab7
 		static void Main(string[] args)
 		{
 			int threadsNumber = 5;
-			ConsoleWriter.StartConsoleRefreshing();
+			ConsoleWriter.StartRefreshCycle();
 
 			IntegralCalculator calculator = new();
 			calculator.CalculationFinished += PrintResult;
@@ -30,12 +30,11 @@ namespace _153502_Kochergov_Lab7
 				//Thread.Sleep(10);
 			}
 			threads.ForEach(thread => thread.Join());
-			ConsoleWriter.StopConsoleRefreshing();
+			ConsoleWriter.StopRefreshCycle();
 		}
 
 		static void PrintResult(IntegralCalculationData data)
 		{
-			BarsManager.UpdateBarLineInConsole(data.ThreadId, 1.0);
 			int lineIndex = data.IndexOfBarLine + 1;
 			ConsoleWriter.SetLine(lineIndex, $"Thread with id: {data.ThreadId:D2} finished.");
 			ConsoleWriter.SetLine(lineIndex + 1, $"Result: {data.Result}, elapsed time: {data.Elapsed}");

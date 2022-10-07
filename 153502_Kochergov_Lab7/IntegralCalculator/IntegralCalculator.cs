@@ -7,19 +7,13 @@ namespace _IntegralCalculator
 	public class IntegralCalculator
 	{
 		public static bool ShouldUseSemaphore = true;
+		public static bool ShouldAddDelay = false;
 
-		public delegate void ProgressUpdateHandler(int threadId, double progress);
 		public delegate void ResultHandler(IntegralCalculationData data);
 
-		public event ProgressUpdateHandler ProgressUpdated;
 		public event ResultHandler CalculationFinished;
 
 		private static Semaphore _semaphore = new(2, 2);
-
-		public IntegralCalculator()
-		{
-			ProgressUpdated += BarsManager.UpdateBarLineInConsole;
-		}
 
 		private static double F(double x)
 		{
@@ -43,17 +37,18 @@ namespace _IntegralCalculator
 			double step = 0.00000001;
 			double x = start + step / 2;
 			long steps = (long)(Math.Abs(end - start) / step);
-			for (long i = 0, counter = 0; i < steps; i++, counter++)
+			for (long i = 0, counter = 1; i < steps; i++, counter++)
 			{
 				result += F(x) * step;
 				x += step;
 
-				//for (int j = 0; j < 1e1; j++) // Delay
-				//	start /= 0.999;			  //
+				if (ShouldAddDelay)				  //
+					for (int j = 0; j < 1e1; j++) // Delay
+						start /= 0.999;           //
 
 				if (counter == (int)1e5)
 				{
-					ProgressUpdated?.Invoke(threadId, (i + 1.0) / steps);
+					BarsManager.UpdateBarLine(threadId, (i + 1.0) / steps);
 					counter = 0;
 				}
 			}

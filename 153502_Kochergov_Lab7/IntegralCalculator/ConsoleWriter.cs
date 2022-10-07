@@ -12,7 +12,7 @@ namespace _IntegralCalculator
 	{
 		private static List<string> _linesList = new();
 
-		private static Thread _consoleThread;
+		private static Thread _refreshCycleThread;
 
 		private static bool _refreshStopFlag = false;
 
@@ -25,15 +25,15 @@ namespace _IntegralCalculator
 			}
 		}
 
-		public static void StartConsoleRefreshing()
+		public static void StartRefreshCycle()
 		{
-			_consoleThread = new Thread(DoRefreshCycle);
-			_consoleThread.Priority = ThreadPriority.AboveNormal;
+			_refreshCycleThread = new Thread(DoRefreshCycle);
+			_refreshCycleThread.Priority = ThreadPriority.AboveNormal;
 			_refreshStopFlag = false;
-			_consoleThread.Start();
+			_refreshCycleThread.Start();
 		}
 
-		public static void StopConsoleRefreshing()
+		public static void StopRefreshCycle()
 		{
 			_refreshStopFlag = true;
 		}

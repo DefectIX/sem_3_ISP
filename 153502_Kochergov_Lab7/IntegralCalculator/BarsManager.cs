@@ -33,7 +33,7 @@ namespace _IntegralCalculator
 			}
 		}
 
-		public static void UpdateBarLineInConsole(int threadId, double progress)
+		public static void UpdateBarLine(int threadId, double progress)
 		{
 			ProgressBar bar = DctThreadIdBars[threadId];
 			bar.Progress = progress;
