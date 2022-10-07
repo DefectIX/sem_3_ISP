@@ -27,8 +27,8 @@ namespace _IntegralCalculator
 
 		public static void StartConsoleRefreshing()
 		{
-			Console.CursorVisible = false;
-			_consoleThread = new Thread(Refresh);
+			_consoleThread = new Thread(DoRefreshCycle);
+			_consoleThread.Priority = ThreadPriority.AboveNormal;
 			_refreshStopFlag = false;
 			_consoleThread.Start();
 		}
@@ -36,21 +36,27 @@ namespace _IntegralCalculator
 		public static void StopConsoleRefreshing()
 		{
 			_refreshStopFlag = true;
-			Console.CursorVisible = true;
 		}
 
-		private static void Refresh()
+		private static void DoRefreshCycle()
 		{
 			while (true)
 			{
-				lock (_linesList)
-				{
-					Console.SetCursorPosition(0, 0);
-					Console.Write(string.Join('\n', _linesList));
-				}
+				Refresh();
 				if (_refreshStopFlag)
 					break;
 				Thread.Sleep(10);
+			}
+		}
+
+		public static void Refresh()
+		{
+			lock (_linesList)
+			{
+				Console.CursorVisible = false;
+				Console.SetCursorPosition(0, 0);
+				Console.Write(string.Join('\n', _linesList));
+				Console.CursorVisible = true;
 			}
 		}
 
@@ -70,11 +76,11 @@ namespace _IntegralCalculator
 			}
 		}
 
-		public static void SetLine(int lineNumber, string newValue)
+		public static void SetLine(int lineIndex, string value)
 		{
 			lock (_linesList)
 			{
-				_linesList[lineNumber] = newValue;
+				_linesList[lineIndex] = value;
 			}
 		}
 	}

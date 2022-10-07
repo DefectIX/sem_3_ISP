@@ -12,31 +12,24 @@ namespace _153502_Kochergov_Lab7
 		static void Main(string[] args)
 		{
 			int threadsNumber = 5;
-
 			ConsoleWriter.StartConsoleRefreshing();
 
-
 			IntegralCalculator calculator = new();
-			calculator.ProgressUpdated += BarsManager.UpdateBarLineInConsole;
 			calculator.CalculationFinished += PrintResult;
 
 			List<Thread> threads = new();
 			for (int i = 0; i < threadsNumber; i++)
 			{
 				threads.Add(new Thread(calculator.CalculateIntegral));
-				
-				if (i % 2 == 0)
-					threads.Last().Priority = ThreadPriority.Highest;
-				else
-					threads.Last().Priority = ThreadPriority.Lowest;
+
+				threads.Last().Priority = (i % 2 == 0) ? ThreadPriority.Highest : ThreadPriority.Lowest;
 			}
 			foreach (var thread in threads)
 			{
 				thread.Start();
-				Thread.Sleep(10);
+				//Thread.Sleep(10);
 			}
 			threads.ForEach(thread => thread.Join());
-			
 			ConsoleWriter.StopConsoleRefreshing();
 		}
 

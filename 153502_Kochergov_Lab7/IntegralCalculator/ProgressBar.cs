@@ -29,7 +29,7 @@ namespace _IntegralCalculator
 			if (percents != 100)
 				bar += '>';
 			bar += new string(' ', BarLength - bar.Length);
-			return $"Thread {ThreadId.ToString("D2")} [{bar}] {percents}%";
+			return $"Thread {ThreadId:D2} [{bar}] {percents}%";
 		}
 	}
 }

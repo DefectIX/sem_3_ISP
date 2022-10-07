@@ -28,8 +28,9 @@ namespace _IntegralCalculator
 			{
 				if (DctThreadIdBars.TryAdd(threadId, new ProgressBar(threadId, 0, ConsoleWriter.LinesCount)))
 					ConsoleWriter.AddLines(LinesPerBar);
+				var bar = DctThreadIdBars[threadId];
+				ConsoleWriter.SetLine(bar.LineIndex, bar.ToString());
 			}
-			UpdateBarLineInConsole(threadId, 0);
 		}
 
 		public static void UpdateBarLineInConsole(int threadId, double progress)
