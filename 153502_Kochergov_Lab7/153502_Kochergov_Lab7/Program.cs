@@ -22,16 +22,22 @@ namespace _153502_Kochergov_Lab7
 
 			List<Thread> threads = new();
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				threads.Add(new Thread(calculator.CalculateIntegral));
 				_barsManager.AddProgressBar(threads.Last().ManagedThreadId);
+				if (i % 2 == 0)
+					threads.Last().Priority = ThreadPriority.Highest;
+				else
+					threads.Last().Priority = ThreadPriority.Lowest;
 			}
 
 			//Thread thread1 = new Thread(calculator.CalculateIntegral);
 			//Thread thread2 = new Thread(calculator.CalculateIntegral);
 			//Thread thread3 = new Thread(calculator.CalculateIntegral);
 
+			//thread1.Priority = ThreadPriority.Lowest;
+			//thread2.Priority = ThreadPriority.Highest;
 
 			//_barsManager.AddProgressBar(thread1.ManagedThreadId);
 			//_barsManager.AddProgressBar(thread2.ManagedThreadId);

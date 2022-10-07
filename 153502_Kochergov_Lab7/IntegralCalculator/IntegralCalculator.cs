@@ -6,6 +6,8 @@ namespace _IntegralCalculator
 {
 	public class IntegralCalculator
 	{
+		private static Semaphore _semaphore = new(2,2);
+
 		public delegate void ProgressUpdateHandler(int threadId, double progress);
 		public delegate void ResultHandler(double result, Stopwatch elapsedTime, int threadId);
 
@@ -19,6 +21,7 @@ namespace _IntegralCalculator
 
 		public void CalculateIntegral()
 		{
+			_semaphore.WaitOne();
 			Stopwatch sw = new();
 			sw.Start();
 
@@ -46,6 +49,7 @@ namespace _IntegralCalculator
 
 			sw.Stop();
 			CalculationFinished?.Invoke(result, sw, Thread.CurrentThread.ManagedThreadId);
+			_semaphore.Release();
 		}
 	}
 }
