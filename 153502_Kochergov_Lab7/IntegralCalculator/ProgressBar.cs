@@ -6,23 +6,20 @@ using System.Threading.Tasks;
 
 namespace _IntegralCalculator
 {
-	public class ProgressBar
+	public struct ProgressBar
 	{
-		private static int _instanceCounter = 0;
 		public static int BarLength = 50;
 
-		public ProgressBar(int threadId, double progress)
+		public ProgressBar(int threadId, double progress, int lineIndex)
 		{
-			Id = _instanceCounter++;
 			ThreadId = threadId;
 			Progress = progress;
-			IsFinished = false;
+			LineIndex = lineIndex;
 		}
 
-		public int Id { get; }
 		public int ThreadId { get; set; }
 		public double Progress { get; set; }
-		public bool IsFinished { get; set; }
+		public int LineIndex { get; set; }
 
 		public override string ToString()
 		{
@@ -32,7 +29,7 @@ namespace _IntegralCalculator
 			if (percents != 100)
 				bar += '>';
 			bar += new string(' ', BarLength - bar.Length);
-			return $"Thread {ThreadId} [{bar}] {percents}%";
+			return $"Thread {ThreadId.ToString("D2")} [{bar}] {percents}%";
 		}
 	}
 }

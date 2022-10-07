@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace _IntegralCalculator
@@ -11,21 +12,52 @@ namespace _IntegralCalculator
 	{
 		private static List<string> _linesList = new();
 
-		private static object _block = new();
+		private static Thread _consoleThread;
 
-		public static void UpdateConsole()
+		private static bool _refreshStopFlag = false;
+
+		public static int LinesCount
 		{
-			lock (_block)
+			get
 			{
-				Console.CursorVisible = false;
-				Console.SetCursorPosition(0, 0);
-				Console.Write(string.Join('\n', _linesList));
+				lock (_linesList)
+					return _linesList.Count;
+			}
+		}
+
+		public static void StartConsoleRefreshing()
+		{
+			Console.CursorVisible = false;
+			if (_consoleThread == null)
+				_consoleThread = new Thread(Refresh);
+			_refreshStopFlag = false;
+			_consoleThread.Start();
+		}
+
+		public static void StopConsoleRefreshing()
+		{
+			_refreshStopFlag = true;
+			Console.CursorVisible = true;
+		}
+
+		private static void Refresh()
+		{
+			while (true)
+			{
+				lock (_linesList)
+				{
+					Console.SetCursorPosition(0, 0);
+					Console.Write(string.Join('\n', _linesList));
+				}
+				if (_refreshStopFlag)
+					break;
+				Thread.Sleep(10);
 			}
 		}
 
 		public static void AddLines(int number)
 		{
-			lock (_block)
+			lock (_linesList)
 			{
 				_linesList.AddRange(new string[number]);
 			}
@@ -33,7 +65,7 @@ namespace _IntegralCalculator
 
 		public static void RemoveLines(int number)
 		{
-			lock (_block)
+			lock (_linesList)
 			{
 				_linesList.RemoveRange(_linesList.Count - number, number);
 			}
@@ -41,7 +73,7 @@ namespace _IntegralCalculator
 
 		public static void SetLine(int lineNumber, string newValue)
 		{
-			lock (_block)
+			lock (_linesList)
 			{
 				_linesList[lineNumber] = newValue;
 			}
