@@ -32,15 +32,15 @@ namespace _153502_Kochergov_Lab7
 			thread1.Start();
 			//Thread.Sleep(1000);
 			thread2.Start();
-			Thread.Sleep(20000);
+			//Thread.Sleep(20000);
 		}
 
 		static void PrintResult(double result, Stopwatch elapsedTime, int threadId)
 		{
 			_barsManager.UpdateProgressBar(threadId, 1.0);
 			int line_number = _barsManager.GetBarId(threadId) * ProgressBarsManager.LinesForBar + 1;
-			_writer.Lines[line_number] = $"Thread with id: {threadId} finished.";
-			_writer.Lines[line_number + 1] = $"Result: {result}, elapsed time: {elapsedTime.Elapsed}";
+			_writer.LinesList[line_number] = $"Thread with id: {threadId} finished.";
+			_writer.LinesList[line_number + 1] = $"Result: {result}, elapsed time: {elapsedTime.Elapsed}";
 			_writer.UpdateConsole();
 		}
 	}

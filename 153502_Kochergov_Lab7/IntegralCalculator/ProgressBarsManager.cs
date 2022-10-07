@@ -38,7 +38,7 @@ namespace _IntegralCalculator
 					allFinished = false;
 					if (bar.Value.Progress == 1.0)
 						bar.Value.IsFinished = true;
-					Writer.Lines[bar.Value.InstanceId * LinesForBar] = bar.Value.ToString();
+					Writer.LinesList[bar.Value.InstanceId * LinesForBar] = bar.Value.ToString();
 					Writer.UpdateConsole();
 				}
 
