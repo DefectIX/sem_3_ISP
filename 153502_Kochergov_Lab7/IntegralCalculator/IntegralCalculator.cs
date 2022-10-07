@@ -39,8 +39,8 @@ namespace _IntegralCalculator
 				result += F(x) * step;
 				x += step;
 
-				for (int j = 0; j < 1e1; j++) // Delay
-					start /= 0.999;			  //
+				//for (int j = 0; j < 1e1; j++) // Delay
+				//	start /= 0.999;			  //
 
 				if (counter == (int)1e4)
 				{

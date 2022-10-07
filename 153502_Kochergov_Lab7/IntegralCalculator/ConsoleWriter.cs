@@ -28,8 +28,7 @@ namespace _IntegralCalculator
 		public static void StartConsoleRefreshing()
 		{
 			Console.CursorVisible = false;
-			if (_consoleThread == null)
-				_consoleThread = new Thread(Refresh);
+			_consoleThread = new Thread(Refresh);
 			_refreshStopFlag = false;
 			_consoleThread.Start();
 		}
