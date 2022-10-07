@@ -22,7 +22,7 @@ namespace _153502_Kochergov_Lab7
 
 			List<Thread> threads = new();
 
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				threads.Add(new Thread(calculator.CalculateIntegral));
 				_barsManager.AddProgressBar(threads.Last().ManagedThreadId);
@@ -44,7 +44,11 @@ namespace _153502_Kochergov_Lab7
 			//_barsManager.AddProgressBar(thread3.ManagedThreadId);
 
 			_barsManager.StartBarsPrinting();
-			threads.ForEach(thread => thread.Start());
+			foreach (var thread in threads)
+			{
+				thread.Start();
+				Thread.Sleep(20);
+			}
 			//thread1.Start();
 			//Thread.Sleep(1000);
 			//thread2.Start();

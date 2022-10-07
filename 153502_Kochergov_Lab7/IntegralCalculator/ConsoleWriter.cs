@@ -17,6 +17,7 @@ namespace _IntegralCalculator
 		{
 			lock (_block)
 			{
+				Console.CursorVisible = false;
 				Console.SetCursorPosition(0, 0);
 				Console.Write(string.Join('\n', _linesList));
 			}

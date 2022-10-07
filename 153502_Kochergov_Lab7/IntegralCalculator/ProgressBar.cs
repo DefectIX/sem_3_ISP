@@ -9,7 +9,7 @@ namespace _IntegralCalculator
 	public class ProgressBar
 	{
 		private static int _instanceCounter = 0;
-		public static int BarLength = 132;
+		public static int BarLength = 50;
 
 		public ProgressBar(int threadId, double progress)
 		{
