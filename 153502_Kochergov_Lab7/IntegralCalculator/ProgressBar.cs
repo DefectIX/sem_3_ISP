@@ -13,13 +13,13 @@ namespace _IntegralCalculator
 
 		public ProgressBar(int threadId, double progress)
 		{
-			InstanceId = _instanceCounter++;
+			Id = _instanceCounter++;
 			ThreadId = threadId;
 			Progress = progress;
 			IsFinished = false;
 		}
 
-		public int InstanceId { get; }
+		public int Id { get; }
 		public int ThreadId { get; set; }
 		public double Progress { get; set; }
 		public bool IsFinished { get; set; }

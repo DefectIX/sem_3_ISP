@@ -1,4 +1,7 @@
-﻿using System;
+﻿//
+// ReSharper disable CompareOfFloatsByEqualityOperator
+// ReSharper disable CheckNamespace
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +15,14 @@ namespace _IntegralCalculator
 	{
 		public static int LinesForBar = 5;
 
-		private Dictionary<int, ProgressBar> bars = new();
+		private readonly Dictionary<int, ProgressBar> _dctThreadIdBars;
 
-		private Thread _printerThread;
+		private readonly Thread _printerThread;
 
-		public ConsoleWriter Writer;
-
-		public ProgressBarsManager(ConsoleWriter writer)
+		public ProgressBarsManager()
 		{
 			_printerThread = new Thread(UpdateConsole);
-			Writer = writer;
+			_dctThreadIdBars = new Dictionary<int, ProgressBar>();
 		}
 
 		private void UpdateConsole()
@@ -30,22 +31,23 @@ namespace _IntegralCalculator
 			{
 				bool allFinished = true;
 
-				foreach (var bar in bars)
+				foreach (var pair  in _dctThreadIdBars)
 				{
-					if (bar.Value.IsFinished)
+					ProgressBar bar = pair.Value;
+					if (bar.IsFinished)
 						continue;
-
 					allFinished = false;
-					if (bar.Value.Progress == 1.0)
-						bar.Value.IsFinished = true;
-					Writer.LinesList[bar.Value.InstanceId * LinesForBar] = bar.Value.ToString();
-					Writer.UpdateConsole();
+					if (bar.Progress == 1.0)
+						bar.IsFinished = true;
+					int lineNumber = bar.Id * LinesForBar;
+					ConsoleWriter.SetLine(lineNumber, bar.ToString());
+					ConsoleWriter.UpdateConsole();
 				}
 
 				if (allFinished)
 					break;
 
-				Thread.Sleep(5);
+				//Thread.Sleep(100);
 			}
 		}
 
@@ -56,18 +58,18 @@ namespace _IntegralCalculator
 
 		public int GetBarId(int threadId)
 		{
-			return bars[threadId].InstanceId;
+			return _dctThreadIdBars[threadId].Id;
 		}
 
 		public void AddProgressBar(int threadId)
 		{
-			bars.Add(threadId, new ProgressBar(threadId, 0));
-			Writer.AddLines(LinesForBar);
+			_dctThreadIdBars.Add(threadId, new ProgressBar(threadId, 0));
+			ConsoleWriter.AddLines(LinesForBar);
 		}
 
 		public void UpdateProgressBar(int threadId, double progress)
 		{
-			bars[threadId].Progress = progress;
+			_dctThreadIdBars[threadId].Progress = progress;
 		}
 	}
 }

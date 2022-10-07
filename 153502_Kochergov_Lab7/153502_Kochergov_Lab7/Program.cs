@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -9,39 +10,49 @@ namespace _153502_Kochergov_Lab7
 	class Program
 	{
 		private static ProgressBarsManager _barsManager;
-		private static ConsoleWriter _writer;
 
 		static void Main(string[] args)
 		{
-			_writer = new ConsoleWriter();
-			_barsManager = new ProgressBarsManager(_writer);
+			_barsManager = new ProgressBarsManager();
 
 			IntegralCalculator calculator = new();
-
-			Thread thread1 = new Thread(calculator.CalculateIntegral);
-			Thread thread2 = new Thread(calculator.CalculateIntegral);
 
 			calculator.ProgressUpdated += _barsManager.UpdateProgressBar;
 			calculator.CalculationFinished += PrintResult;
 
-			_barsManager.AddProgressBar(thread1.ManagedThreadId);
-			_barsManager.AddProgressBar(thread2.ManagedThreadId);
+			List<Thread> threads = new();
+
+			for (int i = 0; i < 3; i++)
+			{
+				threads.Add(new Thread(calculator.CalculateIntegral));
+				_barsManager.AddProgressBar(threads.Last().ManagedThreadId);
+			}
+
+			//Thread thread1 = new Thread(calculator.CalculateIntegral);
+			//Thread thread2 = new Thread(calculator.CalculateIntegral);
+			//Thread thread3 = new Thread(calculator.CalculateIntegral);
+
+
+			//_barsManager.AddProgressBar(thread1.ManagedThreadId);
+			//_barsManager.AddProgressBar(thread2.ManagedThreadId);
+			//_barsManager.AddProgressBar(thread3.ManagedThreadId);
 
 			_barsManager.StartBarsPrinting();
-
-			thread1.Start();
+			threads.ForEach(thread => thread.Start());
+			//thread1.Start();
 			//Thread.Sleep(1000);
-			thread2.Start();
+			//thread2.Start();
+			//thread3.Start();
 			//Thread.Sleep(20000);
 		}
 
 		static void PrintResult(double result, Stopwatch elapsedTime, int threadId)
 		{
 			_barsManager.UpdateProgressBar(threadId, 1.0);
-			int line_number = _barsManager.GetBarId(threadId) * ProgressBarsManager.LinesForBar + 1;
-			_writer.LinesList[line_number] = $"Thread with id: {threadId} finished.";
-			_writer.LinesList[line_number + 1] = $"Result: {result}, elapsed time: {elapsedTime.Elapsed}";
-			_writer.UpdateConsole();
+			int lineNumber = _barsManager.GetBarId(threadId) * ProgressBarsManager.LinesForBar + 1;
+			ConsoleWriter.SetLine(lineNumber, $"Thread with id: {threadId} finished.");
+			ConsoleWriter.SetLine(lineNumber + 1, $"Result: {result}, elapsed time: {elapsedTime.Elapsed}");
+			ConsoleWriter.UpdateConsole();
 		}
 	}
 }

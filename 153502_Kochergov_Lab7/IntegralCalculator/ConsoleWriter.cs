@@ -7,28 +7,42 @@ using System.Threading.Tasks;
 
 namespace _IntegralCalculator
 {
-	public class ConsoleWriter
+	public static class ConsoleWriter
 	{
-		public ConcurrentDictionary<int, string> LinesList = new();
+		private static List<string> _linesList = new();
 
-		private object block = new();
+		private static object _block = new();
 
-		public void UpdateConsole()
+		public static void UpdateConsole()
 		{
-			//lock (block)
-			//{
-			Console.SetCursorPosition(0, 0);
-			string temp = string.Join('\n', LinesList.Select(x => x.Value));
-			Console.Write(temp);
-			//}
+			lock (_block)
+			{
+				Console.SetCursorPosition(0, 0);
+				Console.Write(string.Join('\n', _linesList));
+			}
 		}
 
-		public void AddLines(int number)
+		public static void AddLines(int number)
 		{
-			int offset = LinesList.Count;
-			for (int i = 0; i < number; i++)
+			lock (_block)
 			{
-				LinesList.TryAdd(i + offset, "");
+				_linesList.AddRange(new string[number]);
+			}
+		}
+
+		public static void RemoveLines(int number)
+		{
+			lock (_block)
+			{
+				_linesList.RemoveRange(_linesList.Count - number, number);
+			}
+		}
+
+		public static void SetLine(int lineNumber, string newValue)
+		{
+			lock (_block)
+			{
+				_linesList[lineNumber] = newValue;
 			}
 		}
 	}
