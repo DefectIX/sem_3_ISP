@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _IntegralCalculator
 {
-	public struct ProgressBar
+	public class ProgressBar
 	{
 		public static int BarLength = 50;
 
