@@ -25,7 +25,7 @@ namespace _153502_Kochergov_Lab8
 			var task1 = service.WriteToStreamAsync(stream, items);
 			Thread.Sleep(10);
 			var task2 = service.CopyFromStreamAsync(stream, fileName);
-			Task.WaitAll(task2);
+			await Task.WhenAll(task2);
 
 			ConsoleWriter.AddLines(12);
 			var a = FoodItemData.GetRandomItem();

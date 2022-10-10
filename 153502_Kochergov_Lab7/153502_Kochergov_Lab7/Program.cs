@@ -27,7 +27,7 @@ namespace _153502_Kochergov_Lab7
 			foreach (var thread in threads)
 			{
 				thread.Start();
-				//Thread.Sleep(10);
+				Thread.Sleep(10);
 			}
 			threads.ForEach(thread => thread.Join());
 			ConsoleWriter.StopRefreshCycle();

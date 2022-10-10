@@ -17,10 +17,11 @@ namespace StreamServiceLibrary
 	public class StreamService<T>
 	{
 		private Semaphore _semaphore = new(1,1);
+		private Mutex mutex = new();
 
 		public async Task WriteToStreamAsync(Stream stream, IEnumerable<T> data) // записывает коллекцию data в поток stream
 		{
-			await Task.Run(_semaphore.WaitOne);
+			mutex.WaitOne();
 			foreach (var element in data)
 			{
 				string serialized = JsonSerializer.Serialize(element);
@@ -30,21 +31,27 @@ namespace StreamServiceLibrary
 				//Console.WriteLine("qwe");
 				await stream.WriteAsync(objBytes, 0, objBytes.Length);
 			}
-			_semaphore.Release();
+			//_semaphore.Release();
+			mutex.ReleaseMutex();
 			//await stream.WriteAsync(dataBytes.ToArray(), 0, dataBytes.Count);
 		}
 
 		public async Task CopyFromStreamAsync(Stream stream, string fileName) // копирует информацию из потока stream в файл с именем fileName
 		{
-			await Task.Run(_semaphore.WaitOne);
+			Console.WriteLine();
+			//await Task.Run(_semaphore.WaitOne);
+			await Task.Run(mutex.WaitOne);
 			//Console.WriteLine("asd");
 			stream.Position = 0;
 			byte[] temp = new byte[stream.Length];
 			await stream.ReadAsync(temp, 0, temp.Length);
 			if (!File.Exists(fileName)) File.Create(fileName).Close();
+
+			
 			await File.WriteAllBytesAsync(fileName, temp);
-			_semaphore.Release();
+			//_semaphore.Release();
 			//await Task.Run(_mutex.ReleaseMutex);
+			mutex.ReleaseMutex();
 		}
 
 		public async Task<int> GetStatisticsAsync(string fileName, Func<T, bool> filter) // считывает объекты типа Т из файла с именем filename 
