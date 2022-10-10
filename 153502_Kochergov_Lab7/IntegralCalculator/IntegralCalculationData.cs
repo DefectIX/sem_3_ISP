@@ -2,7 +2,7 @@
 
 namespace _IntegralCalculator
 {
-	public struct IntegralCalculationData
+	public class IntegralCalculationData
 	{
 		public double Result { get; set; }
 		public TimeSpan Elapsed { get; set; }
