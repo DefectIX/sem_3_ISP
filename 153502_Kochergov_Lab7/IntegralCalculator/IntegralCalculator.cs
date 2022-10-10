@@ -8,7 +8,7 @@ namespace _IntegralCalculator
 	public class IntegralCalculator
 	{
 		public static bool ShouldUseSemaphore = true;
-		public static bool ShouldAddDelay = true;
+		public static bool ShouldExecuteDelay = true;
 
 		public event EventHandler<CalculationFinishedEventArgs> CalculationFinished;
 
@@ -36,9 +36,9 @@ namespace _IntegralCalculator
 				result += Math.Sin(x) * step;
 				x += step;
 
-				if (ShouldAddDelay)               //
-					for (int j = 0; j < 1e1; j++) // Delay
-						start /= 0.999;           //
+				if (ShouldExecuteDelay)               //
+					for (int j = 0; j < 5; j++) // Delay
+						start /= 1;           //
 
 				if (counter == (int)1e5)
 				{
