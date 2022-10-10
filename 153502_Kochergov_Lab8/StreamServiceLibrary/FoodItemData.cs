@@ -30,6 +30,7 @@ namespace StreamServiceLibrary
 			return new FoodItemData
 			{
 				Id = _idCounter++,
+				//ExpirationDate = DateTime.Today.AddDays(-1),
 				ExpirationDate = GetRandomDay(),
 				Name = $"Name{_idCounter}"
 			};
