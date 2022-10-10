@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace _IntegralCalculator
@@ -7,18 +8,13 @@ namespace _IntegralCalculator
 	public class IntegralCalculator
 	{
 		public static bool ShouldUseSemaphore = true;
-		public static bool ShouldAddDelay = false;
+		public static bool ShouldAddDelay = true;
 
 		public delegate void ResultHandler(IntegralCalculationData data);
 
 		public event ResultHandler CalculationFinished;
 
 		private static Semaphore _semaphore = new(2, 2);
-
-		private static double F(double x)
-		{
-			return Math.Sin(x);
-		}
 
 		public void CalculateIntegral()
 		{
@@ -39,7 +35,7 @@ namespace _IntegralCalculator
 			long steps = (long)(Math.Abs(end - start) / step);
 			for (long i = 0, counter = 1; i < steps; i++, counter++)
 			{
-				result += F(x) * step;
+				result += Math.Sin(x) * step;
 				x += step;
 
 				if (ShouldAddDelay)				  //
