@@ -18,13 +18,12 @@ namespace _153502_Kochergov_Lab8
 
 			StreamService<FoodItemData> service = new();
 			List<FoodItemData> items = new();
-			for(int i = 0; i < 1000; i++)
+			for(int i = 0; i < 100000; i++)
 				items.Add(FoodItemData.GetRandomItem());
 
 			MemoryStream stream = new();
 			var task1 = service.WriteToStreamAsync(stream, items);
-			
-			Thread.Sleep(300);
+			Thread.Sleep(10);
 			var task2 = service.CopyFromStreamAsync(stream, fileName);
 			Task.WaitAll(task2);
 
