@@ -10,9 +10,9 @@ namespace _IntegralCalculator
 		public static bool ShouldUseSemaphore = true;
 		public static bool ShouldAddDelay = true;
 
-		public delegate void ResultHandler(IntegralCalculationData data);
+		public delegate void CalculationFinishedEventHandler(object sender, CalculationFinishedEventArgs e);
 
-		public event ResultHandler CalculationFinished;
+		public event CalculationFinishedEventHandler CalculationFinished;
 
 		private static Semaphore _semaphore = new(2, 2);
 
@@ -38,7 +38,7 @@ namespace _IntegralCalculator
 				result += Math.Sin(x) * step;
 				x += step;
 
-				if (ShouldAddDelay)				  //
+				if (ShouldAddDelay)               //
 					for (int j = 0; j < 1e1; j++) // Delay
 						start /= 0.999;           //
 
@@ -50,13 +50,12 @@ namespace _IntegralCalculator
 			}
 			sw.Stop();
 
-			CalculationFinished?.Invoke(new IntegralCalculationData
-			{
-				Result = result,
-				Elapsed = sw.Elapsed,
-				IndexOfBarLine = BarsManager.GetIndexOfBarLine(threadId),
-				ThreadId = threadId
-			});
+			CalculationFinished?.Invoke(this, new CalculationFinishedEventArgs(
+				result,
+				sw.Elapsed,
+				BarsManager.GetIndexOfBarLine(threadId),
+				threadId
+			));
 
 			if (ShouldUseSemaphore)
 				_semaphore.Release();

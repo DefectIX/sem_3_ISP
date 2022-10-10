@@ -33,11 +33,11 @@ namespace _153502_Kochergov_Lab7
 			ConsoleWriter.StopRefreshCycle();
 		}
 
-		static void PrintResult(IntegralCalculationData data)
+		static void PrintResult(object sender, CalculationFinishedEventArgs e)
 		{
-			int lineIndex = data.IndexOfBarLine + 1;
-			ConsoleWriter.SetLine(lineIndex, $"Thread with id: {data.ThreadId:D2} finished.");
-			ConsoleWriter.SetLine(lineIndex + 1, $"Result: {data.Result}, elapsed time: {data.Elapsed}");
+			int lineIndex = e.IndexOfBarLine + 1;
+			ConsoleWriter.SetLine(lineIndex, $"Thread with id: {e.ThreadId:D2} finished.");
+			ConsoleWriter.SetLine(lineIndex + 1, $"Result: {e.Result}, elapsed time: {e.Elapsed}");
 		}
 	}
 }
