@@ -10,9 +10,7 @@ namespace _IntegralCalculator
 		public static bool ShouldUseSemaphore = true;
 		public static bool ShouldAddDelay = true;
 
-		public delegate void CalculationFinishedEventHandler(object sender, CalculationFinishedEventArgs e);
-
-		public event CalculationFinishedEventHandler CalculationFinished;
+		public event EventHandler<CalculationFinishedEventArgs> CalculationFinished;
 
 		private static Semaphore _semaphore = new(2, 2);
 
