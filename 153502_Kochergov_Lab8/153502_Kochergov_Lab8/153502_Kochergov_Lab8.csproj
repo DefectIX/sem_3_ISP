@@ -6,4 +6,8 @@
     <RootNamespace>_153502_Kochergov_Lab8</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StreamServiceLibrary\StreamServiceLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

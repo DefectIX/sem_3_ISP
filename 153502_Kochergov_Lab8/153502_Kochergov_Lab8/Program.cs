@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using StreamServiceLibrary;
 
 namespace _153502_Kochergov_Lab8
 {
@@ -9,42 +12,27 @@ namespace _153502_Kochergov_Lab8
 	{
 		static async Task Main(string[] args)
 		{
-			//var task1 = PrintDoubleAsync(1.5);
-			//task1.Wait();
-			Stopwatch sw = new();
-			sw.Start();
-			double result = 0;
-			double start = 0, end = 1;
-			double step = 0.00000001;
-			double x = start + step / 2;
-			long steps = (long)(Math.Abs(end - start) / step);
-			for (long i = 0, counter = 1; i < steps; i++, counter++)
-			{
-				result += Math.Sin(x) * step;
-				x += step;
+			string fileName = "file";
 
-				//if (ShouldAddDelay)               //
-					for (int j = 0; j < 1e1; j++) // Delay
-						start /= 0.999;           //
+			//ConsoleWriter.StartRefreshCycleAsync();
 
-			}
-			sw.Stop();
-			Console.WriteLine(sw.Elapsed);
-		}
+			StreamService<FoodItemData> service = new();
+			List<FoodItemData> items = new();
+			for(int i = 0; i < 1000; i++)
+				items.Add(FoodItemData.GetRandomItem());
 
-		static int PrintDouble(double n, int q)
-		{
-			return (int)n * q;
-		}
+			MemoryStream stream = new();
+			service.WriteToStreamAsync(stream, items);
+			
+			Thread.Sleep(300);
+			var task2 = service.CopyFromStreamAsync(stream, fileName);
+			Task.WaitAll(task2);
 
-		static async Task<int> PrintDoubleAsync(double d)
-		{
-			Console.WriteLine($"Thread id: {Thread.CurrentThread.ManagedThreadId}");
-			int temp = await Task.Run(() => PrintDouble(d, 2));
-			Console.WriteLine($"Thread id: {Thread.CurrentThread.ManagedThreadId}");
-			int temp2 = await Task.Run(() => PrintDouble(d, 2));
-			Console.WriteLine($"Thread id: {Thread.CurrentThread.ManagedThreadId}");
-			return temp+temp2;
+			ConsoleWriter.AddLines(12);
+			var a = FoodItemData.GetRandomItem();
+			ConsoleWriter.SetLine(5, a.ToString());
+			//if(File.Exists(fileName)) File.Delete(fileName);
+			ConsoleWriter.StopRefreshCycle();
 		}
 	}
 }
