@@ -22,7 +22,7 @@ namespace _153502_Kochergov_Lab8
 				items.Add(FoodItemData.GetRandomItem());
 
 			MemoryStream stream = new();
-			service.WriteToStreamAsync(stream, items);
+			var task1 = service.WriteToStreamAsync(stream, items);
 			
 			Thread.Sleep(300);
 			var task2 = service.CopyFromStreamAsync(stream, fileName);
