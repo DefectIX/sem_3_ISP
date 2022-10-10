@@ -33,7 +33,7 @@ namespace StreamServiceLibrary
 				(progress) =>
 					//Console.WriteLine(progress)
 				{
-					if (progress > 0.99)
+					if (progress > 1.0)
 						progress *= 1;
 					ConsoleWriter.SetLine(_writeToStreamProgressBarIndex, progress.ToString());}
 			);
@@ -59,6 +59,7 @@ namespace StreamServiceLibrary
 				_writeToStreamProgress.Report(q);
 			}
 
+			k /= 1;
 			_semaphore.Release();
 		}
 
