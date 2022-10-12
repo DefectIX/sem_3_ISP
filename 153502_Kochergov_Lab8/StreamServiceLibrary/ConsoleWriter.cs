@@ -9,7 +9,9 @@ namespace StreamServiceLibrary
 {
 	public static class ConsoleWriter
 	{
-		private static List<string> _linesList = new();
+		private static readonly string EmptyLine = new(' ', Console.WindowWidth);
+
+		private static readonly List<string> LinesList = new();
 
 		private static bool _refreshStopFlag = false;
 
@@ -17,9 +19,9 @@ namespace StreamServiceLibrary
 		{
 			get
 			{
-				lock (_linesList)
+				lock (LinesList)
 				{
-					return _linesList.Count;
+					return LinesList.Count;
 				}
 			}
 		}
@@ -33,6 +35,7 @@ namespace StreamServiceLibrary
 		public static void StopRefreshCycle()
 		{
 			_refreshStopFlag = true;
+			Console.CursorVisible = true;
 		}
 
 		private static void DoRefreshCycle()
@@ -49,36 +52,35 @@ namespace StreamServiceLibrary
 
 		public static void Refresh()
 		{
-			lock (_linesList)
+			lock (LinesList)
 			{
 				Console.CursorVisible = false;
 				Console.SetCursorPosition(0, 0);
-				Console.Write(string.Join('\n', _linesList));
-				Console.CursorVisible = true;
+				Console.Write(string.Join('\n', LinesList));
 			}
 		}
 
 		public static void AddLines(int number)
 		{
-			lock (_linesList)
+			lock (LinesList)
 			{
-				_linesList.AddRange(new string[number]);
+				LinesList.AddRange(new string[number]);
 			}
 		}
 
 		public static void RemoveLines(int number)
 		{
-			lock (_linesList)
+			lock (LinesList)
 			{
-				_linesList.RemoveRange(_linesList.Count - number, number);
+				LinesList.RemoveRange(LinesList.Count - number, number);
 			}
 		}
 
 		public static void SetLine(int lineIndex, string value)
 		{
-			lock (_linesList)
+			lock (LinesList)
 			{
-				_linesList[lineIndex] = value;
+				LinesList[lineIndex] = value.PadRight(Console.WindowWidth);
 			}
 		}
 	}

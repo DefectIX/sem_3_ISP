@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,25 +19,23 @@ namespace StreamServiceLibrary
 	{
 		private Semaphore _semaphore = new(1, 1);
 
-		private int _writeToStreamProgressBarIndex = 0;
-		private int _copyFromStreamProgressBarIndex = 0;
-		private int _statisticsStreamProgressBarIndex = 0;
+		private int _WTSBarLineIndex = 0;
+		private int _CFSBarLineIndex = 0;
 
-		private IProgress<double> _writeToStreamProgress;
+		private IProgress<double> _WTSProgress;
+		private IProgress<double> _CFSProgress;
+
+		private void PrintProgressBar(double progress, int lineIndex)
+		{
+			ConsoleWriter.SetLine(lineIndex, progress.ToString(CultureInfo.InvariantCulture));
+		}
 
 		public async Task WriteToStreamAsync(Stream stream, IEnumerable<T> data)
 		{
-			ConsoleWriter.AddLines(4);
-			_writeToStreamProgressBarIndex = ConsoleWriter.LinesCount - 1;
-			_writeToStreamProgress = new Progress<double>
-			(
-				(progress) =>
-					//Console.WriteLine(progress)
-				{
-					if (progress > 1.0)
-						progress *= 1;
-					ConsoleWriter.SetLine(_writeToStreamProgressBarIndex, progress.ToString());}
-			);
+			
+			ConsoleWriter.AddLines(1);
+			_WTSBarLineIndex = ConsoleWriter.LinesCount - 1;
+			_WTSProgress = new Progress<double>((progress) => PrintProgressBar(progress, _WTSBarLineIndex));
 
 			await Task.Run(_semaphore.WaitOne);
 			int n = data.Count();
@@ -54,9 +53,9 @@ namespace StreamServiceLibrary
 				await stream.WriteAsync(lenBytes, 0, lenBytes.Length);
 				await stream.WriteAsync(objBytes, 0, objBytes.Length);
 				double q = i++ * 1.0 / n;
-				if (q >1.0)
+				if (q > 1.0)
 					k /= 1.0;
-				_writeToStreamProgress.Report(q);
+				_WTSProgress.Report(q);
 			}
 
 			k /= 1;
@@ -65,6 +64,10 @@ namespace StreamServiceLibrary
 
 		public async Task CopyFromStreamAsync(Stream stream, string fileName)
 		{
+			ConsoleWriter.AddLines(1);
+			_CFSBarLineIndex = ConsoleWriter.LinesCount - 1;
+			_CFSProgress = new Progress<double>((progress) => PrintProgressBar(progress, _CFSBarLineIndex));
+
 			await Task.Run(_semaphore.WaitOne);
 			if (File.Exists(fileName)) File.Delete(fileName);
 			stream.Position = 0;

@@ -22,7 +22,11 @@ namespace _153502_Kochergov_Lab8
 				items.Add(FoodItemData.GetRandomItem());
 
 			MemoryStream stream = new();
+			ConsoleWriter.AddLines(1);
+			ConsoleWriter.SetLine(0, "WriteToStreamAsync progress:");
 			var task1 = service.WriteToStreamAsync(stream, items);
+			ConsoleWriter.AddLines(3);
+			ConsoleWriter.SetLine(3, "CopyFromStreamAsync progress:");
 			Thread.Sleep(150);
 			var task2 = service.CopyFromStreamAsync(stream, fileName);
 			task2.Wait();
@@ -30,8 +34,8 @@ namespace _153502_Kochergov_Lab8
 			var task3 = service.GetStatisticsAsync(fileName, item => item.ExpirationDate < DateTime.Today);
 			task3.Wait();
 			//ConsoleWriter.AddLines(12);
-			int c = 0;
-			items.ForEach((item => c += item.ExpirationDate < DateTime.Today ? 1 : 0));
+			//int c = 0;
+			//items.ForEach((item => c += item.ExpirationDate < DateTime.Today ? 1 : 0));
 			//ConsoleWriter.SetLine(0, $"Actual: {c}");
 			//ConsoleWriter.SetLine(1, $"Obtained: {task3.Result}");
 			//var a = FoodItemData.GetRandomItem();
