@@ -23,9 +23,9 @@ namespace StreamServiceLibrary
 
 		public override string ToString()
 		{
-			int currentLength = (int)(Progress * BarLength);
-			string bar = new string('=', currentLength);
 			int percents = (int)Math.Round(Progress * 100, 0);
+			int currentLength = percents*BarLength/100;
+			string bar = new string('=', currentLength);
 			if (percents != 100)
 				bar += '>';
 			bar += new string(' ', BarLength - bar.Length);
