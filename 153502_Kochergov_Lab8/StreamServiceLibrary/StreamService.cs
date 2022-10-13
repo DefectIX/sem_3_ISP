@@ -2,6 +2,7 @@
 // ReSharper disable ConvertToUsingDeclaration
 // ReSharper disable MustUseReturnValue
 // ReSharper disable FieldCanBeMadeReadOnly.Local
+// ReSharper disable InconsistentNaming
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,23 +20,24 @@ namespace StreamServiceLibrary
 	{
 		private Semaphore _semaphore = new(1, 1);
 
-		private int _WTSBarLineIndex = 0;
-		private int _CFSBarLineIndex = 0;
-
 		private IProgress<double> _WTSProgress;
 		private IProgress<double> _CFSProgress;
 
-		private void PrintProgressBar(double progress, int lineIndex)
+		private ProgressBar _WTSProgressBar;
+		private ProgressBar _CFSProgressBar;
+
+		private void UpdateProgressBar(ProgressBar bar, double newProgress)
 		{
-			ConsoleWriter.SetLine(lineIndex, progress.ToString(CultureInfo.InvariantCulture));
+			bar.Progress = newProgress;
+			ConsoleWriter.SetLine(bar.LineIndex, bar.ToString());
 		}
 
 		public async Task WriteToStreamAsync(Stream stream, IEnumerable<T> data)
 		{
-			
+
 			ConsoleWriter.AddLines(1);
-			_WTSBarLineIndex = ConsoleWriter.LinesCount - 1;
-			_WTSProgress = new Progress<double>((progress) => PrintProgressBar(progress, _WTSBarLineIndex));
+			_WTSProgressBar = new(0, ConsoleWriter.LinesCount - 1);
+			_WTSProgress = new Progress<double>((progress) => UpdateProgressBar(_WTSProgressBar, progress));
 
 			await Task.Run(_semaphore.WaitOne);
 			int n = data.Count();
@@ -65,15 +67,19 @@ namespace StreamServiceLibrary
 		public async Task CopyFromStreamAsync(Stream stream, string fileName)
 		{
 			ConsoleWriter.AddLines(1);
-			_CFSBarLineIndex = ConsoleWriter.LinesCount - 1;
-			_CFSProgress = new Progress<double>((progress) => PrintProgressBar(progress, _CFSBarLineIndex));
+			_CFSProgressBar = new(0, ConsoleWriter.LinesCount - 1);
+			_CFSProgress = new Progress<double>((progress) => UpdateProgressBar(_CFSProgressBar, progress));
 
+
+			_CFSProgress.Report(0);
 			await Task.Run(_semaphore.WaitOne);
 			if (File.Exists(fileName)) File.Delete(fileName);
 			stream.Position = 0;
 			await using (var fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write))
 			{
+				//Thread.Sleep(500);
 				await stream.CopyToAsync(fileStream);
+				_CFSProgress.Report(1.0);
 			}
 			_semaphore.Release();
 		}

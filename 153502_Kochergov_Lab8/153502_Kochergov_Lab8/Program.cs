@@ -25,7 +25,7 @@ namespace _153502_Kochergov_Lab8
 			ConsoleWriter.AddLines(1);
 			ConsoleWriter.SetLine(0, "WriteToStreamAsync progress:");
 			var task1 = service.WriteToStreamAsync(stream, items);
-			ConsoleWriter.AddLines(3);
+			ConsoleWriter.AddLines(2);
 			ConsoleWriter.SetLine(3, "CopyFromStreamAsync progress:");
 			Thread.Sleep(150);
 			var task2 = service.CopyFromStreamAsync(stream, fileName);
